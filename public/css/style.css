@@ -1,5 +1,5 @@
 body{
-    background-color: skyblue;
+    background-color: white;
     font-family: "plus jakarta sans",sans-serif !important;
     display:flex ;
     flex-direction: column;
@@ -115,3 +115,72 @@ show page fonting */
   width: 80vh; 
 }
 
+.navbar{
+    height: 5rem;
+    background-color: white;
+}
+
+
+/* // dark mode */
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+.dark-mode .navbar {
+  background-color: #181818 !important;
+  border-bottom: 1px solid #333;
+}
+
+.dark-mode .nav-link,
+.dark-mode .navbar-brand {
+  color: white !important;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.dark-mode .card-text {
+  color: white !important;
+}
+
+.dark-mode input,
+.dark-mode textarea {
+  background-color: #222;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark-mode .theme-btn{
+  background-color:#222;
+  color:white;
+}
+
+.dark-mode .f-info {
+  background-color: #1c1c1c !important;
+  color: white !important;
+}
+
+.dark-mode .f-info a,
+.dark-mode .f-info i,
+.dark-mode .f-info-links a {
+  color: white !important;
+}
+
+/* for footer dark mode  */
+.dark-mode .f-info {
+  background-color: #1c1c1c !important;
+  color: white !important;
+}
+
+.dark-mode .f-info-links a {
+  color: white !important;
+}
+
+
+.dark-mode .f-info a,
+.dark-mode .f-info i {
+  color: white !important;
+}
