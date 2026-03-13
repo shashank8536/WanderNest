@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-Mongo_Url = "mongodb://127.0.0.1:27017/wanderlust"
+const Mongo_Url = "mongodb://127.0.0.1:27017/wanderlust"
 
 main()
 .then(()=>{
