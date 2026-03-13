@@ -1,0 +1,17 @@
+<% if(success && success.length){ %>
+    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+<% } %>
+
+<!-- success is the variable we already define in app.js res.locals.sucess -->
+
+
+<!-- Then we have to made this for error also   & error ki length >0 honi chahiye-->
+ <% if(error && error.length){ %>
+    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+<% } %>
