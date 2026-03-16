@@ -122,14 +122,12 @@ show page fonting */
 
 
 /* // dark mode */
-body.dark-mode {
-  background-color: #121212;
+.dark-mode body {
+  background-color: #151515;
   color: white;
 }
-
 .dark-mode .navbar {
   background-color: #181818 !important;
-  border-bottom: 1px solid #333;
 }
 
 .dark-mode .nav-link,
@@ -138,8 +136,7 @@ body.dark-mode {
 }
 
 .dark-mode .card {
-  background-color: #1e1e1e;
-  color: white;
+  background-color: #1c1c1c;
 }
 
 .dark-mode .card-text {
@@ -168,6 +165,32 @@ body.dark-mode {
 .dark-mode .f-info-links a {
   color: white !important;
 }
+.dark-mode #filters {
+  background-color: #151515;
+}
+.dark-mode .listing-card {
+  box-shadow: 0 4px 12px rgba(255,255,255,0.05);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(255,255,255,0.08);
+}
+.dark-mode .show-card {
+  background-color: #1c1c1c;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.dark-mode .btn {
+  border: none;
+}
+.dark-mode .search-input {
+  background-color: #222;
+  color: white;
+  border: 1px solid #333;
+}
 
 /* for footer dark mode  */
 .dark-mode .f-info {
@@ -175,12 +198,8 @@ body.dark-mode {
   color: white !important;
 }
 
-.dark-mode .f-info-links a {
-  color: white !important;
-}
-
-
 .dark-mode .f-info a,
-.dark-mode .f-info i {
+.dark-mode .f-info i,
+.dark-mode .f-info-links a {
   color: white !important;
 }

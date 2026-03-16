@@ -29,11 +29,20 @@
 }
 
 .theme-btn:hover{
-  transform: scale(1.05);
+  transform: scale(1.08);
+  transition: all 0.3s ease;
 }
 .navbar-brand{
   font-size: 1.5rem;
   font-weight: 500;
+}
+#themeIcon{
+  display:inline-block;
+  transition: transform 0.3s ease;
+}
+
+.rotate{
+  transform: rotate(180deg);
 }
 
 
@@ -47,7 +56,9 @@
       <a class="navbar-brand" href="/listings">
         <i class="fa-solid fa-compass"></i> WanderNest
       </a>
-      <button id="themeToggle" class="theme-btn">🌙</button>
+      <button id="themeToggle" class="theme-btn">
+          <span id="themeIcon">🌙</span>
+      </button>
     </div>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
