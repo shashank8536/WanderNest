@@ -7,8 +7,16 @@ const userSchema = new Schema({
     email:{
         type:String,
         required: true
-    }
-})
+    },
+    username:{
+        type:String,
+        required:true
+    },
+    wishlist:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Listing"
+    }]
+});
 
 // passport local mongoose automatically define the username and password in our schema
 userSchema.plugin(passportLocalMongoose);

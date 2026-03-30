@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const ExpressError = require("./Utils/ExpressError.js");
+const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
 const flash = require("connect-flash"); 
 const passport = require("passport");
@@ -20,6 +20,8 @@ const User = require("./models/user.js");
 const listings = require("./Routes/listing.js")
 const review = require("./Routes/reviews.js")
 const user = require("./Routes/user.js");
+
+const wishlistRoutes = require("./routes/wishlist.js");
 
 Mongo_Url = "mongodb://127.0.0.1:27017/wanderlust"
 
@@ -84,6 +86,9 @@ app.use("/listings/:id/review",review);
 // we use merge params to send id to revew.js for post a review from app.js
 //for user
 app.use("/",user);
+
+// for wishlist listing
+app.use("/wishlist",wishlistRoutes);
 
 
 
