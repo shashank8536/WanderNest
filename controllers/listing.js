@@ -4,12 +4,20 @@ const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index = async (req, res) => {
-  let { search } = req.query;
+  let { search, minPrice, maxPrice } = req.query;
   let allListings;
+
+  let priceQuery = {};
+  if (minPrice || maxPrice) {
+    priceQuery.price = {};
+    if (minPrice) priceQuery.price.$gte = Number(minPrice);
+    if (maxPrice) priceQuery.price.$lte = Number(maxPrice);
+  }
 
   if (search) {
 
     const titleResults = await Listing.find({
+      ...priceQuery,
       $or: [
         { title: { $regex: search, $options: "i" } },
         { location: { $regex: search, $options: "i" } },
@@ -30,27 +38,32 @@ module.exports.index = async (req, res) => {
         })
         .send();
 
-      let coordinates =
-        response.body.features[0].geometry.coordinates;
+      if (response.body.features && response.body.features.length > 0) {
+        let coordinates =
+          response.body.features[0].geometry.coordinates;
 
-      allListings = await Listing.find({
-        geometry: {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates,
+        allListings = await Listing.find({
+          ...priceQuery,
+          geometry: {
+            $near: {
+              $geometry: {
+                type: "Point",
+                coordinates,
+              },
+              $maxDistance: 50000,
             },
-            $maxDistance: 50000,
           },
-        },
-      });
+        });
+      } else {
+        allListings = [];
+      }
     }
 
   } else {
 
-    allListings = await Listing.find({});
+    allListings = await Listing.find(priceQuery);
   }
-  res.render("listings/index", { allListings });
+  res.render("listings/index", { allListings, search: search || "", minPrice: minPrice || "", maxPrice: maxPrice || "", category: "" });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -131,7 +144,15 @@ module.exports.deleteListing = async (req, res) => {
 }
 module.exports.categoryListing = async (req, res) => {
   const { category } = req.params;
-  const allListings = await Listing.find({ category });
+  const { minPrice, maxPrice } = req.query;
 
-  res.render("listings/index", { allListings });
+  let query = { category };
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  const allListings = await Listing.find(query);
+  res.render("listings/index", { allListings, search: "", minPrice: minPrice || "", maxPrice: maxPrice || "", category: category || "" });
 }

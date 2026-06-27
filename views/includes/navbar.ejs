@@ -68,8 +68,40 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
       <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search" method="GET" action="/listings">
-          <input class="form-control me-2 search-input" type="search" name="search" placeholder="Search Destinations" aria-label="Search"/>
+        <form class="d-flex align-items-center" role="search" method="GET" action="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %>">
+          <div class="position-relative d-flex align-items-center dropdown">
+            <input class="form-control me-2 search-input" type="search" name="search" placeholder="Search Destinations" aria-label="Search" value="<%= (typeof search !== 'undefined') ? search : '' %>"/>
+            
+            <button type="button" class="btn btn-link position-absolute end-0 p-0 text-decoration-none" id="priceDropdownBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" style="border: none; margin-right: 1.5rem; z-index: 5;">
+              <i class="fa-solid fa-sliders" style="<%= ((typeof minPrice !== 'undefined' && minPrice) || (typeof maxPrice !== 'undefined' && maxPrice)) ? 'color: #fe424d;' : 'color: #6c757d;' %>"></i>
+            </button>
+
+            <!-- Dropdown Menu (Directly below icon, 250px wide, with blur backdrop styling) -->
+            <div class="dropdown-menu p-3 shadow-lg border-0 rounded-4 mt-2 dropdown-menu-end" aria-labelledby="priceDropdownBtn" style="width: 250px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08) !important;">
+              <h6 class="mb-3 fw-bold" style="color: #333; font-size: 0.95rem;">Price range (per night)</h6>
+              
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-light text-muted" style="border: 1px solid #ced4da;">₹</span>
+                  <input type="number" name="minPrice" class="form-control" placeholder="Min" min="0" value="<%= (typeof minPrice !== 'undefined') ? minPrice : '' %>" style="font-size: 0.85rem;">
+                </div>
+                <span class="text-muted" style="font-size: 0.85rem;">to</span>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-light text-muted" style="border: 1px solid #ced4da;">₹</span>
+                  <input type="number" name="maxPrice" class="form-control" placeholder="Max" min="0" value="<%= (typeof maxPrice !== 'undefined') ? maxPrice : '' %>" style="font-size: 0.85rem;">
+                </div>
+              </div>
+              
+              <div class="d-flex gap-2">
+                <a href="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %><%= (typeof search !== 'undefined' && search) ? `?search=${search}` : '' %>" class="btn btn-outline-secondary btn-sm w-50 rounded-pill fw-bold" style="font-size: 0.85rem;">
+                    Clear
+                </a>
+                <button type="submit" class="btn btn-danger btn-sm w-50 rounded-pill fw-bold" style="background-color: #fe424d; border: none; font-size: 0.85rem;">
+                    Apply
+                </button>
+              </div>
+            </div>
+          </div>
           <button class="btn btn-search" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>Search
           </button>
