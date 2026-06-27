@@ -1,3 +1,15 @@
+# 🧳 WanderNest
+
+> **Project Status:** Active Development 🟢
+>
+> A full-stack travel accommodation platform inspired by Airbnb.
+>
+> Currently implementing advanced search, filtering, reviews, wishlist management, and location-based discovery features.
+>
+> **Last Updated:** June 2026
+
+---
+
 # 🏡 WanderNest
 
 A full-stack accommodation discovery platform where users can explore stays, save favorites, and interact with listings — built with modern web technologies and a scalable MVC architecture.
