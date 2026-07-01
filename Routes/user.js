@@ -12,6 +12,11 @@ router.get("/signup",userController.renderSignupForm);
 // for post we using async because we are going save record in db and all 
 router.post("/signup",WrapAsync(userController.signup));
 
+// OTP Verification Routes
+router.get("/verify-otp", userController.renderVerifyOtpForm);
+router.post("/verify-otp", WrapAsync(userController.verifyOtp));
+router.post("/resend-otp", WrapAsync(userController.resendOtp));
+
 router.get("/login",userController.renderLoginForm);
 
 //we use passport.authenticate middleware in post for authentication

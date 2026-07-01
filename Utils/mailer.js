@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // 1. Send OTP for Signup Verification
-module.exports.sendOTPEmail = async (email, username, otp) => {
+const sendOTPEmail = async (email, username, otp) => {
     const mailOptions = {
         from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
@@ -32,7 +32,7 @@ module.exports.sendOTPEmail = async (email, username, otp) => {
 };
 
 // 2. Send OTP for Password Reset
-module.exports.sendResetOTPEmail = async (email, username, otp) => {
+const sendResetOTPEmail = async (email, username, otp) => {
     const mailOptions = {
         from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
@@ -55,7 +55,7 @@ module.exports.sendResetOTPEmail = async (email, username, otp) => {
 };
 
 // 3. Send Booking Confirmation
-module.exports.sendBookingConfirmationEmail = async (email, username, booking) => {
+const sendBookingConfirmationEmail = async (email, username, booking) => {
     const mailOptions = {
         from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
@@ -85,7 +85,7 @@ module.exports.sendBookingConfirmationEmail = async (email, username, booking) =
 };
 
 // 4. Send Booking Cancellation
-module.exports.sendBookingCancellationEmail = async (email, username, bookingId) => {
+const sendBookingCancellationEmail = async (email, username, bookingId) => {
     const mailOptions = {
         from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
@@ -109,4 +109,10 @@ module.exports.sendBookingCancellationEmail = async (email, username, bookingId)
     return transporter.sendMail(mailOptions);
 };
 
-module.exports = transporter;
+module.exports = {
+    transporter,
+    sendOTPEmail,
+    sendResetOTPEmail,
+    sendBookingConfirmationEmail,
+    sendBookingCancellationEmail
+};

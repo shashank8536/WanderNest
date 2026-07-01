@@ -55,3 +55,26 @@ This document tracks all features, changes, and architectural decisions made dur
 *   **[app.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/app.js)**
     *   *Change:* Required `booking.js` routes and mounted them on `/listings/:id/bookings` and `/bookings`.
     *   *Why:* To expose routes globally across the Express application instance.
+
+
+---
+
+## 📅 Phase 3: Advanced Authentication & Email Stack (Completed 🟢)
+**Goal:** Add email verification, OTP generation, password recovery, and transaction-related booking emails.
+
+*   **Step 1: Install Dependencies & Update User Schema** (Completed 🟢)
+    *   *Details:* Installed `nodemailer`. Updated [models/user.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/models/user.js) with fields `isVerified`, `otp`, `otpExpiry`, `resetOtp`, and `resetOtpExpiry`.
+*   **Step 2: Create the Mailer Utility** (Completed 🟢)
+    *   *Details:* Created [utils/mailer.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/utils/mailer.js) to configure the nodemailer transporter with Gmail credentials and exported it.
+*   **Step 3: Create the OTP Generator Utility** (Completed 🟢)
+    *   *Details:* Created [utils/otpGenerator.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/utils/otpGenerator.js) containing `generateOTP()` to create 6-digit random codes. Removed temporary export lines.
+*   **Step 4: Write Mailer Helper Functions** (Completed 🟢)
+    *   *Details:* Added `sendOTPEmail`, `sendResetOTPEmail`, `sendBookingConfirmationEmail`, and `sendBookingCancellationEmail` inside [utils/mailer.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/utils/mailer.js).
+*   **Step 5: Update the Signup & Verification Flow** (Completed 🟢)
+    *   *Details:* 
+        *   Fixed bugs in [utils/otpGenerator.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/utils/otpGenerator.js) and [utils/mailer.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/utils/mailer.js) to clean up exports.
+        *   Updated `signup` in [controllers/users.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/controllers/users.js) to generate a 6-digit OTP, send it to the user's email, store the verification context in the session, and redirect to the OTP verification page.
+        *   Implemented `renderVerifyOtpForm`, `verifyOtp`, and `resendOtp` actions in [controllers/users.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/controllers/users.js) to handle OTP checks, account activation, and resending OTPs.
+        *   Updated `login` in [controllers/users.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/controllers/users.js) to enforce verification status: unverified logins trigger a fresh OTP verification flow.
+        *   Mounted verification routes (`GET /verify-otp`, `POST /verify-otp`, and `POST /resend-otp`) in [routes/user.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/routes/user.js).
+        *   Updated [views/users/verifyOtp.ejs](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/views/users/verifyOtp.ejs) to add a modern, centered Resend OTP form.

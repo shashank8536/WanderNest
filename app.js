@@ -22,6 +22,7 @@ const review = require("./Routes/reviews.js")
 const user = require("./Routes/user.js");
 
 const wishlistRoutes = require("./routes/wishlist.js");
+const bookingRoutes = require("./routes/booking.js");
 
 Mongo_Url = "mongodb://127.0.0.1:27017/wanderlust"
 
@@ -89,6 +90,10 @@ app.use("/",user);
 
 // for wishlist listing
 app.use("/wishlist",wishlistRoutes);
+
+// for bookings
+app.use("/listings/:id/bookings", bookingRoutes);
+app.use("/bookings", bookingRoutes);
 
 
 
