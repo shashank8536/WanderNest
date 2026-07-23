@@ -6,7 +6,7 @@ const { renderTravelAssistant, generateTravelPlan } = require("../controllers/tr
 // render ai assistannt page
 router.get("/travel-assistant",renderTravelAssistant);
 
-// generate travvel plan
+// generate travel plan
 router.post("/travel-assistant/generate",generateTravelPlan);
 
 module.exports=router;

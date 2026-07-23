@@ -3,8 +3,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   initPills();
   initChecklist();
+  initTravelForm();
 });
-
 /**
  * Handle selection of Travel Type pills
  */
@@ -16,10 +16,10 @@ function initPills() {
     pill.addEventListener("click", () => {
       // Remove active class from all pills
       pills.forEach((p) => p.classList.remove("active"));
-      
+
       // Add active class to clicked pill
       pill.classList.add("active");
-      
+
       // Update hidden input value
       if (hiddenInput) {
         hiddenInput.value = pill.getAttribute("data-value");
@@ -38,7 +38,7 @@ function initChecklist() {
   function updateProgress() {
     const totalItems = packingCards.length;
     const checkedItems = document.querySelectorAll(".packing-item-card.checked").length;
-    
+
     if (progressBadge) {
       progressBadge.textContent = `${checkedItems}/${totalItems} Packed`;
     }
@@ -46,7 +46,7 @@ function initChecklist() {
 
   packingCards.forEach((card) => {
     const checkbox = card.querySelector('input[type="checkbox"]');
-    
+
     // Set initial class state based on HTML checked attribute
     if (checkbox && checkbox.checked) {
       card.classList.add("checked");
@@ -59,7 +59,7 @@ function initChecklist() {
         updateProgress();
         return;
       }
-      
+
       if (checkbox) {
         checkbox.checked = !checkbox.checked;
         card.classList.toggle("checked", checkbox.checked);
@@ -70,4 +70,38 @@ function initChecklist() {
 
   // Run initial progress check
   updateProgress();
+
 }
+//Handle Travel Form Submission (AJAX)
+function initTravelForm() {
+  const form = document.getElementById("travelForm");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+
+    console.log("Form Data:", data);
+
+    try {
+      const response = await fetch("/travel-assistant/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      console.log("Backend Response:", result);
+
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  });
+}
+

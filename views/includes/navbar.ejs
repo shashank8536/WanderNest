@@ -33,8 +33,16 @@
   transition: all 0.3s ease;
 }
 .navbar-brand{
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.navbar-brand img.logo{
+  height: 48px;
+  width: auto;
+  margin-right: 8px;
+  object-fit: contain;
 }
 #themeIcon{
   display:inline-block;
@@ -52,9 +60,9 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
 
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-4">
       <a class="navbar-brand" href="/listings">
-        <i class="fa-solid fa-compass"></i> WanderNest
+        <img class="logo" src="/logo.png" alt="WanderNest Logo">WanderNest
       </a>
       <button id="themeToggle" class="theme-btn">
           <span id="themeIcon">🌙</span>
@@ -111,6 +119,7 @@
       <div class="navbar-nav ms-auto">
 
         <a class="nav-link" href="/wishlist">Wishlist ❤️</a>
+        <a class="nav-link" href="/travel-assistant">AI Travel Assistant ✨</a>
         <% if(currUser){ %>
           <a class="nav-link" href="/bookings">My Bookings 📅</a>
         <% } %>

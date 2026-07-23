@@ -56,7 +56,6 @@ This document tracks all features, changes, and architectural decisions made dur
     *   *Change:* Required `booking.js` routes and mounted them on `/listings/:id/bookings` and `/bookings`.
     *   *Why:* To expose routes globally across the Express application instance.
 
-
 ---
 
 ## 📅 Phase 3: Advanced Authentication & Email Stack (Completed 🟢)
@@ -78,3 +77,59 @@ This document tracks all features, changes, and architectural decisions made dur
         *   Updated `login` in [controllers/users.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/controllers/users.js) to enforce verification status: unverified logins trigger a fresh OTP verification flow.
         *   Mounted verification routes (`GET /verify-otp`, `POST /verify-otp`, and `POST /resend-otp`) in [routes/user.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/routes/user.js).
         *   Updated [views/users/verifyOtp.ejs](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/views/users/verifyOtp.ejs) to add a modern, centered Resend OTP form.
+
+---
+
+## 📅 Phase 4: Custom Logo Integration (Completed 🟢)
+**Goal:** Integrate the custom W logo icon designed using Stitch, ensuring high quality, transparent backgrounds, and compatible navbar styling.
+
+### 1. Logo Asset Preparation
+*   **Asset Processing (`Pillow` Python Library):**
+    *   *Change:* Re-downloaded the Stitch-designed brand logo (`logo_opt3.png`). Created and executed a python script using the `Pillow` library to isolate only the W logo icon mark from the left half of the image (limiting bounding box scans to `maxX=188` to avoid capturing overlapping text). Keyed out the white background pixels to transparent, saving the final PNG directly to `public/logo.png`.
+    *   *Why:* JPEGs do not support transparency, which would look poor on dark/light shifting themes. Splitting the logo icon and text allows scaling the icon independently, keeping the brand text crisp and scalable via HTML.
+
+### 2. View & UI Files
+*   **[views/includes/navbar.ejs](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/views/includes/navbar.ejs)**
+    *   *Change:* Replaced the generic FontAwesome compass icon (`<i class="fa-solid fa-compass"></i>`) with the custom transparent `logo.png` image tag.
+    *   *Styling:*
+        *   Logo size set to `height: 48px; width: auto;`.
+        *   Logo spacing adjusted using `.logo` class with `margin-right: 8px`.
+        *   Brand font-size bumped to `1.7rem` with `font-weight: 700` (bold).
+        *   Vertically center-aligned elements using `display: flex; align-items: center;`.
+        *   Set outer brand container gap to `gap-4` to let the brand breathe.
+    *   *Why:* To make the brand prominent and professionally balanced against other elements like the search bar, while keeping spacing compact.
+
+---
+
+## 📅 Phase 5: AI Travel Assistant UI (Completed 🟢)
+**Goal:** Create a comprehensive, premium UI for the AI Travel Assistant to let users plan their itineraries, check weather forecasts, track packing essentials, and see recommended stays.
+
+### 1. View & UI Files
+*   **[views/listings/travel-assistant.ejs](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/views/listings/travel-assistant.ejs) [NEW]**
+    *   *Change:* Built a full travel planner template featuring:
+        *   **Hero Section:** Welcoming header introducing the AI Travel Assistant.
+        *   **Interactive Form:** Inputs for Destination, Budget Range, Duration, Month of Travel, and Travel Type (using custom pill buttons).
+        *   **Weather Forecast Widget:** Renders temperature, weather conditions, rain probability, and wind metrics.
+        *   **Dynamic Packing Checklist:** Checklist items that keep track of packed essentials with a progress counter.
+        *   **Detailed Itinerary Timeline:** Interactive day-by-day itinerary layout mapping travel timings and events.
+        *   **Recommended Stays:** Tailored WanderNest listings recommending options for the selected trip.
+        *   **Smart Alternatives:** Cards suggesting nearby alternative destinations (e.g., Hakone and Nikko for Tokyo).
+    *   *Why:* To deliver a state-of-the-art travel planner that enhances user retention and matches the premium booking experience of modern travel applications.
+*   **[views/includes/navbar.ejs](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/views/includes/navbar.ejs)**
+    *   *Change:* Added a nav link pointing to `/travel-assistant` labeled "AI Travel Assistant ✨".
+    *   *Why:* To ensure the assistant is easily discoverable from any page of the site.
+
+### 2. Styling & Frontend Scripts
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css) [NEW]**
+    *   *Change:* Wrote custom CSS styles implementing glassmorphism, responsive grids, interactive hover effects, timeline connectors/bullets, weather status card backgrounds, custom input styling, and layout aesthetics.
+    *   *Why:* To keep the look modern and visual-first without bloating the core template style sheet.
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js) [NEW]**
+    *   *Change:* Added dynamic UI behavior:
+        *   Handled the selection state and values for travel-type pills.
+        *   Programmed the interactive packing checklist to toggle checks, update lists, and recalculate packing progress in real time (e.g., "4/8 Packed").
+    *   *Why:* To make the frontend highly responsive and interactive.
+
+### 3. Server-side Route Integration
+*   **[app.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/app.js)**
+    *   *Change:* Mounted a GET route `/travel-assistant` rendering the `listings/travel-assistant.ejs` view.
+    *   *Why:* To expose the page to the web server and enable navigation.

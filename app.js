@@ -13,6 +13,8 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const travelAssistant = require("./routes/travelAssistant.js");
+
 
 // const path = require("path");
 
@@ -40,10 +42,12 @@ async function main(){
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.engine('ejs',ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
+
 
 const sessionOptions = {
     secret :"mysupersecretcode",
@@ -80,6 +84,10 @@ app.use((req,res,next)=>{
     next();
 })
 
+
+// for assistant
+app.use("/",travelAssistant);
+
 ////  for listing
 app.use("/listings",listings);
 // for reviews
@@ -90,6 +98,11 @@ app.use("/",user);
 
 // for wishlist listing
 app.use("/wishlist",wishlistRoutes);
+
+// for travel assistant page
+app.get("/travel-assistant", (req, res) => {
+    res.render("listings/travel-assistant.ejs");
+});
 
 // for bookings
 app.use("/listings/:id/bookings", bookingRoutes);
@@ -122,6 +135,8 @@ app.use("/bookings", bookingRoutes);
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, 'Page not Found!'));
 });
+
+// for ai assistant rooute
 
  //custom error handling
 app.use((err,req,res,next)=>{

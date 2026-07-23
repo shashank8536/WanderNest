@@ -1,366 +1,363 @@
 <% layout("layouts/Boilerplate") %>
 
-<link rel="stylesheet" href="/css/aiTravel.css">
+  <link rel="stylesheet" href="/css/aiTravel.css">
 
-<div class="travel-assistant-container">
-  
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <h1>✨ WanderNest AI Travel Assistant</h1>
-    <p>Plan your perfect trip with AI-powered itineraries, weather insights, packing recommendations, and personalized stay suggestions.</p>
-  </section>
+  <div class="travel-assistant-container">
 
-  <!-- Travel Planner Form -->
-  <section class="mb-5">
-    <div class="assistant-card">
-      <form id="travelForm" onsubmit="event.preventDefault();">
-        <div class="row g-4">
-          
-          <!-- Destination Input -->
-          <div class="col-lg-3 col-md-6">
-            <div class="form-group-custom">
-              <label for="destination">Where to?</label>
-              <div class="input-icon-wrapper">
-                <i class="fa-solid fa-location-dot"></i>
-                <input type="text" id="destination" class="form-control form-control-custom" placeholder="Tokyo, Japan" value="Tokyo, Japan">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1> WanderNest AI Travel Assistant</h1>
+      <p>Plan your perfect trip with AI-powered itineraries, weather insights, packing recommendations, and personalized
+        stay suggestions.</p>
+    </section>
+
+    <!-- Travel Planner Form -->
+    <section class="mb-5">
+      <div class="assistant-card">
+        <form action="/travel-assistant/generate" method="post" id="travelForm">
+          <div class="row g-4">
+
+            <!-- Destination Input -->
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group-custom">
+                <label for="destination">Where to?</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <input type="text" id="destination" name="destination" class="form-control form-control-custom"
+                    placeholder="Tokyo, Japan" value="Tokyo, Japan">
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Budget Select -->
-          <div class="col-lg-3 col-md-6">
-            <div class="form-group-custom">
-              <label for="budget">Budget Range</label>
-              <div class="input-icon-wrapper">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <select id="budget" class="form-control form-control-custom">
-                  <option value="budget">$ - Budget</option>
-                  <option value="moderate" selected>$$ - Moderate</option>
-                  <option value="luxury">$$$ - Luxury</option>
-                </select>
+            <!-- Budget Select -->
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group-custom">
+                <label for="budget">Budget Range</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-money-bill-wave"></i>
+                  <select id="budget" name="budget" class="form-control form-control-custom">
+                    <option value="budget">$ - Budget</option>
+                    <option value="moderate" selected>$$ - Moderate</option>
+                    <option value="luxury">$$$ - Luxury</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Duration Select -->
-          <div class="col-lg-3 col-md-6">
-            <div class="form-group-custom">
-              <label for="duration">Duration</label>
-              <div class="input-icon-wrapper">
-                <i class="fa-solid fa-calendar-days"></i>
-                <select id="duration" class="form-control form-control-custom">
-                  <option value="3">3 Days</option>
-                  <option value="5" selected>5 Days</option>
-                  <option value="7">7 Days</option>
-                  <option value="10">10 Days</option>
-                </select>
+            <!-- Duration Select -->
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group-custom">
+                <label for="duration">Duration</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-calendar-days"></i>
+                  <select id="duration" name="duration" class="form-control form-control-custom">
+                    <option value="3">3 Days</option>
+                    <option value="5" selected>5 Days</option>
+                    <option value="7">7 Days</option>
+                    <option value="10">10 Days</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Travel Month Select -->
-          <div class="col-lg-3 col-md-6">
-            <div class="form-group-custom">
-              <label for="travelMonth">Month of Travel</label>
-              <div class="input-icon-wrapper">
-                <i class="fa-solid fa-calendar-check"></i>
-                <select id="travelMonth" class="form-control form-control-custom">
-                  <option value="january">January</option>
-                  <option value="february">February</option>
-                  <option value="march">March</option>
-                  <option value="april">April</option>
-                  <option value="may">May</option>
-                  <option value="june">June</option>
-                  <option value="july">July</option>
-                  <option value="august">August</option>
-                  <option value="september">September</option>
-                  <option value="october" selected>October</option>
-                  <option value="november">November</option>
-                  <option value="december">December</option>
-                </select>
+            <!-- Travel Month Select -->
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group-custom">
+                <label for="travelMonth">Month of Travel</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-calendar-check"></i>
+                  <select id="travelMonth" name="month" class="form-control form-control-custom">
+                    <option value="january">January</option>
+                    <option value="february">February</option>
+                    <option value="march">March</option>
+                    <option value="april">April</option>
+                    <option value="may">May</option>
+                    <option value="june">June</option>
+                    <option value="july">July</option>
+                    <option value="august">August</option>
+                    <option value="september">September</option>
+                    <option value="october" selected>October</option>
+                    <option value="november">November</option>
+                    <option value="december">December</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Travel Type Pills -->
-          <div class="col-12">
-            <div class="form-group-custom mb-0">
-              <label>Travel Type</label>
-              <input type="hidden" id="travelTypeInput" value="couple">
-              <div class="pill-container">
-                <button type="button" class="pill-btn" data-value="solo">Solo</button>
-                <button type="button" class="pill-btn active" data-value="couple">Couple</button>
-                <button type="button" class="pill-btn" data-value="family">Family</button>
-                <button type="button" class="pill-btn" data-value="friends">Friends</button>
+            <!-- Travel Type Pills -->
+            <div class="col-12">
+              <div class="form-group-custom mb-0">
+                <label>Travel Type</label>
+                <input type="hidden" name="travelType" id="travelTypeInput" value="couple">
+                <div class="pill-container">
+                  <button type="button" class="pill-btn" data-value="solo">Solo</button>
+                  <button type="button" class="pill-btn active" data-value="couple">Couple</button>
+                  <button type="button" class="pill-btn" data-value="family">Family</button>
+                  <button type="button" class="pill-btn" data-value="friends">Friends</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Generate Button -->
-          <div class="col-12 mt-4">
-            <button type="submit" class="btn btn-generate w-100">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Travel Plan
-            </button>
-            <p class="form-subtext">✨ AI uses weather forecasts, your budget, trip duration, and travel preferences to generate personalized recommendations.</p>
-          </div>
+            <!-- Generate Button -->
+            <div class="col-12 mt-4">
+              <button type="submit" class="btn btn-generate w-100">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Travel Plan
+              </button>
+              <p class="form-subtext"> AI uses weather forecasts, your budget, trip duration, and travel preferences to
+                generate personalized recommendations.</p>
+            </div>
 
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <!-- Output Section: Weather & Packing -->
-  <section class="row g-4 mb-5">
-    
-    <!-- Weather Card -->
-    <div class="col-lg-5">
-      <div class="assistant-card weather-card-bg h-100">
-        <div class="weather-card-content d-flex flex-column justify-content-between h-100 w-100">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-white-50 small mb-1 fw-bold">Weather Forecast</p>
-              <h3 class="text-white font-weight-bold mb-0">Tokyo, Japan</h3>
-            </div>
-            <div class="weather-badge">
-              <i class="fa-solid fa-sun text-warning"></i> Perfect
-            </div>
           </div>
-          <div class="mt-4 d-flex justify-content-between align-items-end">
-            <div>
-              <h2 class="display-4 text-white font-weight-bold mb-0" style="font-size: 3.5rem;">22°C</h2>
-              <p class="text-white mb-0 small">Partly Sunny • Low humidity</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Output Section: Weather & Packing -->
+    <section class="row g-4 mb-5">
+
+      <!-- Weather Card -->
+      <div class="col-lg-5">
+        <div class="assistant-card weather-card-bg h-100">
+          <div class="weather-card-content d-flex flex-column justify-content-between h-100 w-100">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <p class="text-white-50 small mb-1 fw-bold">Weather Forecast</p>
+                <h3 id="weatherCity" class="text-white font-weight-bold mb-0">Tokyo, Japan</h3>
+              </div>
+              <div class="weather-badge">
+                <span id="weatherCondition">Perfect</span>
+              </div>
             </div>
-            <div class="text-end">
-              <p class="text-white-50 mb-0 small">Rain: 15%</p>
-              <p class="text-white-50 mb-0 small">Wind: 12km/h</p>
+            <div class="mt-4 d-flex justify-content-between align-items-end">
+              <h2 id="weatherTemp" class="display-4 text-white font-weight-bold mb-0" style="font-size: 3.5rem;">
+                22°C
+              </h2>
+              <p id="weatherHumidity" class="text-white-50 mb-0 small">
+                Humidity: 0%
+              </p>
+              <p id="weatherWind" class="text-white-50 mb-0 small">
+                Wind: 0 km/h
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Packing Essentials Card -->
-    <div class="col-lg-7">
-      <div class="assistant-card h-100">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="h5 font-weight-bold mb-0" style="font-weight: 700;">
-            <i class="fa-solid fa-clipboard-check text-danger me-2"></i> Packing Essentials
-          </h3>
-          <span class="pack-progress-badge">4/8 Packed</span>
-        </div>
-        <div class="packing-grid">
-          
-          <div class="packing-item-card checked">
-            <input type="checkbox" id="pack1" checked>
-            <span>Universal Adapter</span>
+      <!-- Packing Essentials Card -->
+      <div class="col-lg-7">
+        <div class="assistant-card h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="h5 font-weight-bold mb-0" style="font-weight: 700;">
+              <i class="fa-solid fa-clipboard-check text-danger me-2"></i> Packing Essentials
+            </h3>
+            <span class="pack-progress-badge">4/8 Packed</span>
           </div>
+          <div class="packing-grid">
 
-          <div class="packing-item-card checked">
-            <input type="checkbox" id="pack2" checked>
-            <span>Comfortable Shoes</span>
-          </div>
-
-          <div class="packing-item-card">
-            <input type="checkbox" id="pack3">
-            <span>Portable Charger</span>
-          </div>
-
-          <div class="packing-item-card">
-            <input type="checkbox" id="pack4">
-            <span>Rain Shell Jacket</span>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Travel Advisory Warnings Section -->
-  <section class="mb-5">
-    <div class="assistant-card advisory-card">
-      <h4><i class="fa-solid fa-triangle-exclamation"></i> Travel Advisory</h4>
-      <p class="mb-0 text-muted">October is one of the best times to visit Tokyo as the weather is pleasant and autumn foliage is starting. However, keep an eye out for occasional typhoon warnings early in the month. Carrying a compact umbrella is recommended.</p>
-    </div>
-  </section>
-
-  <!-- Itinerary Section -->
-  <section class="itinerary-section mb-5">
-    <h2>Your Itinerary</h2>
-    <div class="timeline-container">
-      
-      <!-- Day 1 -->
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-day-header">
-          <h3><span class="day-tag">Day 1</span> • Arrival & Urban Pulse</h3>
-          <p>Settle into Tokyo and experience the bustling Shibuya atmosphere.</p>
-        </div>
-        <div class="timeline-day-card">
-          
-          <div class="timeline-event">
-            <div class="event-icon-box">
-              <i class="fa-solid fa-plane-arrival"></i>
+            <div class="packing-item-card checked">
+              <input type="checkbox" id="pack1" checked>
+              <span>Universal Adapter</span>
             </div>
-            <div class="event-details">
-              <h4>Narita Airport Arrival</h4>
-              <p class="time-meta">10:30 AM</p>
-              <p class="desc">Land in Tokyo. Take the Narita Express (N'EX) private transfer directly to your stay in Shinjuku.</p>
-            </div>
-          </div>
 
-          <div class="timeline-event">
-            <div class="event-icon-box">
-              <i class="fa-solid fa-flag"></i>
+            <div class="packing-item-card checked">
+              <input type="checkbox" id="pack2" checked>
+              <span>Comfortable Shoes</span>
             </div>
-            <div class="event-details">
-              <h4>Shibuya Crossing & Hachiko</h4>
-              <p class="time-meta">4:00 PM</p>
-              <p class="desc">Experience the world's busiest pedestrian crossing, greet the iconic Hachiko statue, and explore local shopping lanes.</p>
-            </div>
-          </div>
 
+            <div class="packing-item-card">
+              <input type="checkbox" id="pack3">
+              <span>Portable Charger</span>
+            </div>
+
+            <div class="packing-item-card">
+              <input type="checkbox" id="pack4">
+              <span>Rain Shell Jacket</span>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      <!-- Day 2 -->
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-day-header">
-          <h3><span class="day-tag">Day 2</span> • Ancient Echoes & Modern Views</h3>
-          <p>Explore Tokyo's oldest temple and catch views of the massive skyline.</p>
-        </div>
-        <div class="timeline-day-card">
+    </section>
 
-          <div class="timeline-event">
-            <div class="event-icon-box">
-              <i class="fa-solid fa-torii-gate"></i>
-            </div>
-            <div class="event-details">
-              <h4>Senso-ji Temple</h4>
-              <p class="time-meta">9:30 AM</p>
-              <p class="desc">Visit Tokyo's oldest Buddhist temple in Asakusa, stroll through Nakamise shopping street, and pick up local souvenirs.</p>
-            </div>
-          </div>
-
-          <div class="timeline-event">
-            <div class="event-icon-box">
-              <i class="fa-solid fa-eye"></i>
-            </div>
-            <div class="event-details">
-              <h4>Tokyo Skytree</h4>
-              <p class="time-meta">2:00 PM</p>
-              <p class="desc">Admire breathtaking panoramic views of the city skyline from the observation deck (350 meters high).</p>
-            </div>
-          </div>
-
-        </div>
+    <!-- Travel Advisory Warnings Section -->
+    <section class="mb-5">
+      <div class="assistant-card advisory-card">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> Travel Advisory</h4>
+        <p class="mb-0 text-muted">October is one of the best times to visit Tokyo as the weather is pleasant and autumn
+          foliage is starting. However, keep an eye out for occasional typhoon warnings early in the month. Carrying a
+          compact umbrella is recommended.</p>
       </div>
+    </section>
 
-    </div>
-  </section>
+    <!-- Itinerary Section -->
+    <section class="itinerary-section mb-5">
+      <h2>Your Itinerary</h2>
+      <div class="timeline-container">
 
-  <!-- Recommended WanderNest Stays -->
-  <section class="mb-5">
-    <div class="section-title-wrapper d-flex justify-content-between align-items-center">
-      <h2 class="mb-0">Recommended WanderNest Stays</h2>
-      <a href="/listings" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">Explore More</a>
-    </div>
-    
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-      
-      <!-- Reuse home page listing-card layout structure with dummy stays -->
-      <% 
-      let dummyStays = [
-        {
-          _id: "dummy1",
-          title: "Modern Shinjuku Penthouse Suite",
-          price: 5200,
-          location: "Tokyo",
-          image: { url: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=500&auto=format&fit=crop" }
-        },
-        {
-          _id: "dummy2",
-          title: "Kyoto Riverside Traditional Machiya",
-          price: 4900,
-          location: "Kyoto",
-          image: { url: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=500&auto=format&fit=crop" }
-        },
-        {
-          _id: "dummy3",
-          title: "Tokyo Cozy Shibuyah Loft",
-          price: 3800,
-          location: "Tokyo",
-          image: { url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=500&auto=format&fit=crop" }
-        }
-      ];
-      %>
-
-      <% for(let listing of dummyStays) { %>
-        <div class="col position-relative">
-          
-          <!-- Wishlist Heart Dummy Button -->
-          <div style="position:absolute; top:10px; right:20px; z-index:10;">
-            <button style="border:none; background:none; font-size:1.5rem; color:red;">
-              🤍
-            </button>
+        <!-- Day 1 -->
+        <div class="timeline-day">
+          <div class="timeline-dot"></div>
+          <div class="timeline-day-header">
+            <h3><span class="day-tag">Day 1</span> • Arrival & Urban Pulse</h3>
+            <p>Settle into Tokyo and experience the bustling Shibuya atmosphere.</p>
           </div>
-          
-          <!-- Link to Details -->
-          <a href="#" class="listing-link" onclick="event.preventDefault();">
-            <div class="card listing-card">
-              <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-              <div class="card-img-overlay"></div>
-              <div class="card-body mt-2">
-                <p class="card-text">
-                  <b><%= listing.title %></b><br>
-                  &#8377; <%= listing.price.toLocaleString("en-IN") %> /night
-                  <i class="tax-info" style="display: none;"> &nbsp; &nbsp; +18% GST</i>
-                </p>
+          <div class="timeline-day-card">
+
+            <div class="timeline-event">
+              <div class="event-icon-box">
+                <i class="fa-solid fa-plane-arrival"></i>
+              </div>
+              <div class="event-details">
+                <h4>Narita Airport Arrival</h4>
+                <p class="time-meta">10:30 AM</p>
+                <p class="desc">Land in Tokyo. Take the Narita Express (N'EX) private transfer directly to your stay in
+                  Shinjuku.</p>
               </div>
             </div>
-          </a>
 
-        </div>
-      <% } %>
+            <div class="timeline-event">
+              <div class="event-icon-box">
+                <i class="fa-solid fa-flag"></i>
+              </div>
+              <div class="event-details">
+                <h4>Shibuya Crossing & Hachiko</h4>
+                <p class="time-meta">4:00 PM</p>
+                <p class="desc">Experience the world's busiest pedestrian crossing, greet the iconic Hachiko statue, and
+                  explore local shopping lanes.</p>
+              </div>
+            </div>
 
-    </div>
-  </section>
-
-  <!-- Smart Alternatives Section -->
-  <section class="mb-5">
-    <div class="section-title-wrapper">
-      <h2>Smart Alternatives</h2>
-    </div>
-    <div class="row g-4">
-      
-      <!-- Alternative 1 -->
-      <div class="col-md-6">
-        <div class="alternative-card">
-          <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef21?q=80&w=500&auto=format&fit=crop" alt="Hakone" class="alternative-img">
-          <div class="alternative-body">
-            <h4>Hakone</h4>
-            <p class="meta"><i class="fa-solid fa-road"></i> Approx. 85 km away</p>
-            <p class="desc text-muted">A perfect alternative to busy Tokyo. Hakone is famous for its relaxing traditional hot springs (onsens), Mount Fuji scenic views, and lake cruises.</p>
           </div>
         </div>
-      </div>
 
-      <!-- Alternative 2 -->
-      <div class="col-md-6">
-        <div class="alternative-card">
-          <img src="https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?q=80&w=500&auto=format&fit=crop" alt="Nikko" class="alternative-img">
-          <div class="alternative-body">
-            <h4>Nikko</h4>
-            <p class="meta"><i class="fa-solid fa-road"></i> Approx. 140 km away</p>
-            <p class="desc text-muted">A beautiful mountain town famed for the Toshogu Shrine, ornate wood carvings, beautiful Kegon waterfall, and scenic hiking trails.</p>
+        <!-- Day 2 -->
+        <div class="timeline-day">
+          <div class="timeline-dot"></div>
+          <div class="timeline-day-header">
+            <h3><span class="day-tag">Day 2</span> • Ancient Echoes & Modern Views</h3>
+            <p>Explore Tokyo's oldest temple and catch views of the massive skyline.</p>
+          </div>
+          <div class="timeline-day-card">
+
+            <div class="timeline-event">
+              <div class="event-icon-box">
+                <i class="fa-solid fa-torii-gate"></i>
+              </div>
+              <div class="event-details">
+                <h4>Senso-ji Temple</h4>
+                <p class="time-meta">9:30 AM</p>
+                <p class="desc">Visit Tokyo's oldest Buddhist temple in Asakusa, stroll through Nakamise shopping
+                  street, and pick up local souvenirs.</p>
+              </div>
+            </div>
+
+            <div class="timeline-event">
+              <div class="event-icon-box">
+                <i class="fa-solid fa-eye"></i>
+              </div>
+              <div class="event-details">
+                <h4>Tokyo Skytree</h4>
+                <p class="time-meta">2:00 PM</p>
+                <p class="desc">Admire breathtaking panoramic views of the city skyline from the observation deck (350
+                  meters high).</p>
+              </div>
+            </div>
+
           </div>
         </div>
+
+      </div>
+    </section>
+
+    <!-- Recommended WanderNest Stays -->
+    <section class="mb-5">
+      <div class="section-title-wrapper d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">Recommended WanderNest Stays</h2>
+        <a href="/listings" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">Explore More</a>
       </div>
 
-    </div>
-  </section>
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
 
-</div>
+        <!-- Reuse home page listing-card layout structure with dummy stays -->
+        <% let dummyStays=[ { _id: "dummy1" , title: "Modern Shinjuku Penthouse Suite" , price: 5200, location: "Tokyo"
+          , image: { url: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=500&auto=format&fit=crop"
+          } }, { _id: "dummy2" , title: "Kyoto Riverside Traditional Machiya" , price: 4900, location: "Kyoto" , image:
+          { url: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=500&auto=format&fit=crop" } }, {
+          _id: "dummy3" , title: "Tokyo Cozy Shibuyah Loft" , price: 3800, location: "Tokyo" , image: {
+          url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=500&auto=format&fit=crop" } } ]; %>
 
-<script defer src="/js/aiTravel.js"></script>
+          <% for(let listing of dummyStays) { %>
+            <div class="col position-relative">
+
+              <!-- Wishlist Heart Dummy Button -->
+              <div style="position:absolute; top:10px; right:20px; z-index:10;">
+                <button style="border:none; background:none; font-size:1.5rem; color:red;">
+                  🤍
+                </button>
+              </div>
+
+              <!-- Link to Details -->
+              <a href="#" class="listing-link" onclick="event.preventDefault();">
+                <div class="card listing-card">
+                  <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
+                  <div class="card-img-overlay"></div>
+                  <div class="card-body mt-2">
+                    <p class="card-text">
+                      <b>
+                        <%= listing.title %>
+                      </b><br>
+                      &#8377; <%= listing.price.toLocaleString("en-IN") %> /night
+                        <i class="tax-info" style="display: none;"> &nbsp; &nbsp; +18% GST</i>
+                    </p>
+                  </div>
+                </div>
+              </a>
+
+            </div>
+            <% } %>
+
+      </div>
+    </section>
+
+    <!-- Smart Alternatives Section -->
+    <section class="mb-5">
+      <div class="section-title-wrapper">
+        <h2>Smart Alternatives</h2>
+      </div>
+      <div class="row g-4">
+
+        <!-- Alternative 1 -->
+        <div class="col-md-6">
+          <div class="alternative-card">
+            <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef21?q=80&w=500&auto=format&fit=crop"
+              alt="Hakone" class="alternative-img">
+            <div class="alternative-body">
+              <h4>Hakone</h4>
+              <p class="meta"><i class="fa-solid fa-road"></i> Approx. 85 km away</p>
+              <p class="desc text-muted">A perfect alternative to busy Tokyo. Hakone is famous for its relaxing
+                traditional hot springs (onsens), Mount Fuji scenic views, and lake cruises.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alternative 2 -->
+        <div class="col-md-6">
+          <div class="alternative-card">
+            <img src="https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?q=80&w=500&auto=format&fit=crop"
+              alt="Nikko" class="alternative-img">
+            <div class="alternative-body">
+              <h4>Nikko</h4>
+              <p class="meta"><i class="fa-solid fa-road"></i> Approx. 140 km away</p>
+              <p class="desc text-muted">A beautiful mountain town famed for the Toshogu Shrine, ornate wood carvings,
+                beautiful Kegon waterfall, and scenic hiking trails.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script defer src="/js/aiTravel.js"></script>
