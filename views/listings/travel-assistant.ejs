@@ -119,26 +119,47 @@
       <div class="col-lg-5">
         <div class="assistant-card weather-card-bg h-100">
           <div class="weather-card-content d-flex flex-column justify-content-between h-100 w-100">
+
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <p class="text-white-50 small mb-1 fw-bold">Weather Forecast</p>
-                <h3 id="weatherCity" class="text-white font-weight-bold mb-0">Tokyo, Japan</h3>
+                <p class="text-white-50 small mb-1 fw-bold">
+                  Weather Forecast
+                </p>
+
+                <h3 id="weatherCity" class="text-white fw-bold mb-0">
+                  Tokyo, Japan
+                </h3>
               </div>
+
               <div class="weather-badge">
                 <span id="weatherCondition">Perfect</span>
               </div>
             </div>
+
             <div class="mt-4 d-flex justify-content-between align-items-end">
-              <h2 id="weatherTemp" class="display-4 text-white font-weight-bold mb-0" style="font-size: 3.5rem;">
-                22°C
-              </h2>
-              <p id="weatherHumidity" class="text-white-50 mb-0 small">
-                Humidity: 0%
-              </p>
-              <p id="weatherWind" class="text-white-50 mb-0 small">
-                Wind: 0 km/h
-              </p>
+
+              <div>
+                <h2 id="weatherTemp" class="display-4 text-white fw-bold mb-0" style="font-size:3.5rem;">
+                  22°C
+                </h2>
+
+                <p id="weatherDescription" class="text-white mb-0 small">
+                  Partly Sunny
+                </p>
+              </div>
+
+              <div class="text-end">
+                <p id="weatherHumidity" class="text-white-50 mb-1 small">
+                  Humidity: 0%
+                </p>
+
+                <p id="weatherWind" class="text-white-50 mb-0 small">
+                  Wind: 0 km/h
+                </p>
+              </div>
+
             </div>
+
           </div>
         </div>
       </div>
@@ -152,7 +173,7 @@
             </h3>
             <span class="pack-progress-badge">4/8 Packed</span>
           </div>
-          <div class="packing-grid">
+          <div class="packing-grid" id="packingGrid">
 
             <div class="packing-item-card checked">
               <input type="checkbox" id="pack1" checked>

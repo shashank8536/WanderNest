@@ -81,12 +81,19 @@ function initTravelForm() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Generating...
+    `;
+
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
 
-    console.log("Form Data:", data);
-
     try {
+
       const response = await fetch("/travel-assistant/generate", {
         method: "POST",
         headers: {
@@ -97,10 +104,63 @@ function initTravelForm() {
 
       const result = await response.json();
 
-      console.log("Backend Response:", result);
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      const weather = result.weather;
+
+      document.getElementById("weatherCity").textContent =
+        `${weather.city}, ${weather.country}`;
+
+      document.getElementById("weatherTemp").textContent =
+        `${weather.temperature}°C`;
+
+      document.getElementById("weatherCondition").textContent =
+        weather.weather;
+
+      document.getElementById("weatherDescription").textContent =
+        weather.description;
+
+      document.getElementById("weatherHumidity").textContent =
+        `Humidity: ${weather.humidity}%`;
+
+      document.getElementById("weatherWind").textContent =
+        `Wind: ${weather.windSpeed} m/s`;
+
+      // Update Packing Essentials
+      const packingGrid = document.getElementById("packingGrid");
+
+      packingGrid.innerHTML = "";
+
+      const items = typeof result.packingList === "string"
+        ? JSON.parse(result.packingList)
+        : result.packingList;
+
+      items.forEach((item, index) => {
+        packingGrid.innerHTML += `
+        <div class="packing-item-card">
+            <input type="checkbox" id="pack${index}">
+            <span>${item}</span>
+        </div>
+    `;
+      });
+
+      document.querySelector(".pack-progress-badge").textContent =
+        `0/${items.length} Packed`;
+
+      initChecklist();
 
     } catch (err) {
-      console.error("Error:", err);
+      console.error(err);
+    } finally {
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Generate Travel Plan
+        `;
     }
   });
 }
