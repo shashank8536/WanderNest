@@ -1,6 +1,5 @@
 const axios = require("axios");
-const { generatePackingList } = require("../services/geminiService");
-
+const { generatePackingList, generateTravelAdvisory, generateItinerary } = require("../services/geminiService");
 module.exports.renderTravelAssistant = (req, res) => {
     res.render("listings/travel-assistant");
 };
@@ -39,12 +38,44 @@ module.exports.generateTravelPlan = async (req, res) => {
             weatherData.description
         );
         const packingItems = JSON.parse(packingList);
-        // console.log(packingList);
+
+       
+        // console.log(packingItems);
+
+        // for travelAdvisory
+        const travelAdvisory = await generateTravelAdvisory(
+            destination,
+            req.body.month,
+            currentMonth,
+            req.body.duration,
+            req.body.travelType,
+            weatherData.description
+        );
+
+        const advisoryItems = JSON.parse(travelAdvisory);
+
+        // console.log(advisoryItems);
+
+        // for generating Itenary
+        const itinerary = await generateItinerary(
+            destination,
+            req.body.month,
+            currentMonth,
+            req.body.duration,
+            req.body.travelType,
+            weatherData.description
+        );
+
+        const itineraryItems = JSON.parse(itinerary);
+
+        // console.log(JSON.stringify(itineraryItems, null, 2));
 
         return res.json({
             success: true,
             weather: weatherData,
-            packingList: packingItems
+            packingList: packingItems,
+            travelAdvisory: advisoryItems,
+            itinerary: itineraryItems
         });
     } catch (err) {
 

@@ -152,6 +152,71 @@ function initTravelForm() {
 
       initChecklist();
 
+      //  ADD THIS HERE (Travel Advisory)
+      const advisoryText = document.getElementById("travelAdvisoryText");
+
+      advisoryText.innerHTML = result.travelAdvisory
+        .map(item => `• ${item}`)
+        .join("<br>");
+
+      // Update Itinerary
+      const timelineContainer = document.getElementById("timelineContainer");
+
+      timelineContainer.innerHTML = "";
+
+      result.itinerary.forEach(day => {
+        timelineContainer.innerHTML += `
+    <div class="timeline-day">
+
+      <div class="timeline-dot"></div>
+
+      <div class="timeline-day-header">
+        <h3>
+          <span class="day-tag">Day ${day.day}</span>
+        </h3>
+      </div>
+
+      <div class="timeline-day-card">
+
+        <div class="timeline-event">
+          <div class="event-icon-box">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+
+          <div class="event-details">
+            <h4>Morning</h4>
+            <p class="desc">${day.morning}</p>
+          </div>
+        </div>
+
+        <div class="timeline-event">
+          <div class="event-icon-box">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </div>
+
+          <div class="event-details">
+            <h4>Afternoon</h4>
+            <p class="desc">${day.afternoon}</p>
+          </div>
+        </div>
+
+        <div class="timeline-event">
+          <div class="event-icon-box">
+            <i class="fa-solid fa-moon"></i>
+          </div>
+
+          <div class="event-details">
+            <h4>Evening</h4>
+            <p class="desc">${day.evening}</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+      });
+
     } catch (err) {
       console.error(err);
     } finally {
