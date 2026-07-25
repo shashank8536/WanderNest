@@ -216,7 +216,71 @@ function initTravelForm() {
     </div>
   `;
       });
+      // For stay recommendation from your mongodb
+      const staysGrid = document.getElementById("recommendedStaysGrid");
 
+      staysGrid.innerHTML = "";
+
+      if (result.recommendedStays.length === 0) {
+
+        staysGrid.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <h5>No WanderNest stays found.</h5>
+            <p class="text-muted">
+                Try another nearby destination.
+            </p>
+        </div>
+    `;
+
+      } else {
+
+        result.recommendedStays.forEach((listing) => {
+
+          staysGrid.innerHTML += `
+        
+        <div class="col position-relative">
+
+            <a href="/listings/${listing._id}" class="listing-link">
+
+                <div class="card listing-card">
+
+                    <img
+                        src="${listing.image.url}"
+                        class="card-img-top"
+                        alt="${listing.title}"
+                        style="height:20rem;">
+
+                    <div class="card-img-overlay"></div>
+
+                    <div class="card-body mt-2">
+
+                        <p class="card-text">
+
+                            <b>${listing.title}</b>
+
+                            <br>
+
+                            ₹${listing.price.toLocaleString("en-IN")} / night
+
+                            <br>
+
+                            <small>${listing.location}</small>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        `;
+
+        });
+
+      }
     } catch (err) {
       console.error(err);
     } finally {

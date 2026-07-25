@@ -215,14 +215,9 @@
     <section class="itinerary-section mb-5">
       <h2>Your Itinerary</h2>
       <div class="timeline-container" id="timelineContainer">
-
-        
-
       </div>
-        
-
-  
     </section>
+
 
     <!-- Recommended WanderNest Stays -->
     <section class="mb-5">
@@ -231,46 +226,7 @@
         <a href="/listings" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">Explore More</a>
       </div>
 
-      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-
-        <!-- Reuse home page listing-card layout structure with dummy stays -->
-        <% let dummyStays=[ { _id: "dummy1" , title: "Modern Shinjuku Penthouse Suite" , price: 5200, location: "Tokyo"
-          , image: { url: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=500&auto=format&fit=crop"
-          } }, { _id: "dummy2" , title: "Kyoto Riverside Traditional Machiya" , price: 4900, location: "Kyoto" , image:
-          { url: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=500&auto=format&fit=crop" } }, {
-          _id: "dummy3" , title: "Tokyo Cozy Shibuyah Loft" , price: 3800, location: "Tokyo" , image: {
-          url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=500&auto=format&fit=crop" } } ]; %>
-
-          <% for(let listing of dummyStays) { %>
-            <div class="col position-relative">
-
-              <!-- Wishlist Heart Dummy Button -->
-              <div style="position:absolute; top:10px; right:20px; z-index:10;">
-                <button style="border:none; background:none; font-size:1.5rem; color:red;">
-                  🤍
-                </button>
-              </div>
-
-              <!-- Link to Details -->
-              <a href="#" class="listing-link" onclick="event.preventDefault();">
-                <div class="card listing-card">
-                  <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-                  <div class="card-img-overlay"></div>
-                  <div class="card-body mt-2">
-                    <p class="card-text">
-                      <b>
-                        <%= listing.title %>
-                      </b><br>
-                      &#8377; <%= listing.price.toLocaleString("en-IN") %> /night
-                        <i class="tax-info" style="display: none;"> &nbsp; &nbsp; +18% GST</i>
-                    </p>
-                  </div>
-                </div>
-              </a>
-
-            </div>
-            <% } %>
-
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3" id="recommendedStaysGrid">
       </div>
     </section>
 

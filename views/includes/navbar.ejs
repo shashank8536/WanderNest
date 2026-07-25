@@ -1,59 +1,64 @@
 <style>
-  .btn-search{
+  .btn-search {
     background-color: #fe424d;
     color: #fff;
     border-radius: 25px;
     padding: 0 1rem 0 1rem;
 
   }
-  .btn-search:hover{
+
+  .btn-search:hover {
     background-color: #fe424d;
     color: #fff;
   }
-  .btn-search i{
+
+  .btn-search i {
     display: inline;
     margin-right: 0.5rem;
   }
-  .search-input{
+
+  .search-input {
     border-radius: 25px;
     padding: 0.5rem 3.5rem 0.5rem 3rem;
   }
-  .theme-btn{
-  border:none;
-  background-color:white;
-  border-radius:50%;
-  width:45px;
-  height:45px;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
 
-.theme-btn:hover{
-  transform: scale(1.08);
-  transition: all 0.3s ease;
-}
-.navbar-brand{
-  font-size: 1.7rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-}
-.navbar-brand img.logo{
-  height: 48px;
-  width: auto;
-  margin-right: 8px;
-  object-fit: contain;
-}
-#themeIcon{
-  display:inline-block;
-  transition: transform 0.3s ease;
-}
+  .theme-btn {
+    border: none;
+    background-color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
 
-.rotate{
-  transform: rotate(180deg);
-}
+  .theme-btn:hover {
+    transform: scale(1.08);
+    transition: all 0.3s ease;
+  }
 
+  .navbar-brand {
+    font-size: 1.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+  }
 
+  .navbar-brand img.logo {
+    height: 48px;
+    width: auto;
+    margin-right: 8px;
+    object-fit: contain;
+  }
+
+  #themeIcon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .rotate {
+    transform: rotate(180deg);
+  }
 </style>
 
 
@@ -65,7 +70,7 @@
         <img class="logo" src="/logo.png" alt="WanderNest Logo">WanderNest
       </a>
       <button id="themeToggle" class="theme-btn">
-          <span id="themeIcon">🌙</span>
+        <span id="themeIcon">🌙</span>
       </button>
     </div>
 
@@ -76,36 +81,47 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
       <div class="navbar-nav ms-auto">
-        <form class="d-flex align-items-center" role="search" method="GET" action="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %>">
+        <form class="d-flex align-items-center" role="search" method="GET"
+          action="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %>">
           <div class="position-relative d-flex align-items-center dropdown">
-            <input class="form-control me-2 search-input" type="search" name="search" placeholder="Search Destinations" aria-label="Search" value="<%= (typeof search !== 'undefined') ? search : '' %>"/>
-            
-            <button type="button" class="btn btn-link position-absolute end-0 p-0 text-decoration-none" id="priceDropdownBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" style="border: none; margin-right: 1.5rem; z-index: 5;">
-              <i class="fa-solid fa-sliders" style="<%= ((typeof minPrice !== 'undefined' && minPrice) || (typeof maxPrice !== 'undefined' && maxPrice)) ? 'color: #fe424d;' : 'color: #6c757d;' %>"></i>
+            <input class="form-control me-2 search-input" type="search" name="search" placeholder="Search Destinations"
+              aria-label="Search" value="<%= (typeof search !== 'undefined') ? search : '' %>" />
+
+            <button type="button" class="btn btn-link position-absolute end-0 p-0 text-decoration-none"
+              id="priceDropdownBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
+              style="border: none; margin-right: 1.5rem; z-index: 5;">
+              <i class="fa-solid fa-sliders"
+                style="<%= ((typeof minPrice !== 'undefined' && minPrice) || (typeof maxPrice !== 'undefined' && maxPrice)) ? 'color: #fe424d;' : 'color: #6c757d;' %>"></i>
             </button>
 
             <!-- Dropdown Menu (Directly below icon, 250px wide, with blur backdrop styling) -->
-            <div class="dropdown-menu p-3 shadow-lg border-0 rounded-4 mt-2 dropdown-menu-end" aria-labelledby="priceDropdownBtn" style="width: 250px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08) !important;">
+            <div class="dropdown-menu p-3 shadow-lg border-0 rounded-4 mt-2 dropdown-menu-end"
+              aria-labelledby="priceDropdownBtn"
+              style="width: 250px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08) !important;">
               <h6 class="mb-3 fw-bold" style="color: #333; font-size: 0.95rem;">Price range (per night)</h6>
-              
+
               <div class="d-flex align-items-center gap-2 mb-3">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-light text-muted" style="border: 1px solid #ced4da;">₹</span>
-                  <input type="number" name="minPrice" class="form-control" placeholder="Min" min="0" value="<%= (typeof minPrice !== 'undefined') ? minPrice : '' %>" style="font-size: 0.85rem;">
+                  <input type="number" name="minPrice" class="form-control" placeholder="Min" min="0"
+                    value="<%= (typeof minPrice !== 'undefined') ? minPrice : '' %>" style="font-size: 0.85rem;">
                 </div>
                 <span class="text-muted" style="font-size: 0.85rem;">to</span>
                 <div class="input-group input-group-sm">
                   <span class="input-group-text bg-light text-muted" style="border: 1px solid #ced4da;">₹</span>
-                  <input type="number" name="maxPrice" class="form-control" placeholder="Max" min="0" value="<%= (typeof maxPrice !== 'undefined') ? maxPrice : '' %>" style="font-size: 0.85rem;">
+                  <input type="number" name="maxPrice" class="form-control" placeholder="Max" min="0"
+                    value="<%= (typeof maxPrice !== 'undefined') ? maxPrice : '' %>" style="font-size: 0.85rem;">
                 </div>
               </div>
-              
+
               <div class="d-flex gap-2">
-                <a href="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %><%= (typeof search !== 'undefined' && search) ? `?search=${search}` : '' %>" class="btn btn-outline-secondary btn-sm w-50 rounded-pill fw-bold" style="font-size: 0.85rem;">
-                    Clear
+                <a href="<%= (typeof category !== 'undefined' && category) ? `/listings/category/${category}` : '/listings' %><%= (typeof search !== 'undefined' && search) ? `?search=${search}` : '' %>"
+                  class="btn btn-outline-secondary btn-sm w-50 rounded-pill fw-bold" style="font-size: 0.85rem;">
+                  Clear
                 </a>
-                <button type="submit" class="btn btn-danger btn-sm w-50 rounded-pill fw-bold" style="background-color: #fe424d; border: none; font-size: 0.85rem;">
-                    Apply
+                <button type="submit" class="btn btn-danger btn-sm w-50 rounded-pill fw-bold"
+                  style="background-color: #fe424d; border: none; font-size: 0.85rem;">
+                  Apply
                 </button>
               </div>
             </div>
@@ -118,23 +134,23 @@
 
       <div class="navbar-nav ms-auto">
 
-        <a class="nav-link" href="/wishlist">Wishlist ❤️</a>
-        <a class="nav-link" href="/travel-assistant">AI Travel Assistant ✨</a>
+        <a class="nav-link" href="/wishlist">Wishlist</a>
+        <a class="nav-link" href="/travel-assistant">AI Travel Assistant </a>
         <% if(currUser){ %>
-          <a class="nav-link" href="/bookings">My Bookings 📅</a>
-        <% } %>
+          <a class="nav-link" href="/bookings">My Bookings </a>
+          <% } %>
 
-        
-        <a class="nav-link" href="/listings/new">Add New Listing</a>
 
-        <% if(!currUser){ %>
-          <a class="nav-link" href="/signup"><b>Sign up</b></a>
-          <a class="nav-link" href="/login"><b>Log in</b></a>
-        <% } %>
+            <a class="nav-link" href="/listings/new">Add New Listing</a>
 
-        <% if(currUser){ %>
-          <a class="nav-link" href="/logout"><b>Log Out</b></a>
-        <% } %>
+            <% if(!currUser){ %>
+              <a class="nav-link" href="/signup"><b>Sign up</b></a>
+              <a class="nav-link" href="/login"><b>Log in</b></a>
+              <% } %>
+
+                <% if(currUser){ %>
+                  <a class="nav-link" href="/logout"><b>Log Out</b></a>
+                  <% } %>
       </div>
 
     </div>

@@ -1,4 +1,5 @@
 const axios = require("axios");
+const Listing = require("../models/listing");
 const { generatePackingList, generateTravelAdvisory, generateItinerary } = require("../services/geminiService");
 module.exports.renderTravelAssistant = (req, res) => {
     res.render("listings/travel-assistant");
@@ -8,6 +9,9 @@ module.exports.renderTravelAssistant = (req, res) => {
 module.exports.generateTravelPlan = async (req, res) => {
     try {
         const { destination } = req.body;
+        const searchDestination = destination
+            .split(",")[0]
+            .trim();
 
         const API_KEY = process.env.WEATHER_API_KEY;
 
@@ -39,7 +43,7 @@ module.exports.generateTravelPlan = async (req, res) => {
         );
         const packingItems = JSON.parse(packingList);
 
-       
+
         // console.log(packingItems);
 
         // for travelAdvisory
@@ -70,12 +74,41 @@ module.exports.generateTravelPlan = async (req, res) => {
 
         // console.log(JSON.stringify(itineraryItems, null, 2));
 
+        // console.log("Destination received:", destination);
+
+        // // Find recommended WanderNest stays
+        const recommendedStays = await Listing.find({
+            $or: [
+                {
+                    location: {
+                        $regex: searchDestination,
+                        $options: "i"
+                    }
+                },
+                {
+                    country: {
+                        $regex: searchDestination,
+                        $options: "i"
+                    }
+                }
+            ]
+        }).limit(3);
+
+        // console.log(recommendedStays);
+
+        // // DEBUG
+        // const allListings = await Listing.find({}, "title location country");
+
+        // console.log("All Listings:");
+        // console.log(allListings);
+
         return res.json({
             success: true,
             weather: weatherData,
             packingList: packingItems,
             travelAdvisory: advisoryItems,
-            itinerary: itineraryItems
+            itinerary: itineraryItems,
+            recommendedStays
         });
     } catch (err) {
 
