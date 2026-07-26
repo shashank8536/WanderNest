@@ -16,11 +16,12 @@ async function generateTravelPlan(
     const prompt = `
 You are WanderNest AI.
 
-You must generate THREE sections:
+You must generate FOUR sections:
 
 1. Packing List
 2. Travel Advisory
 3. Travel Itinerary
+4. Why Visit Highlights
 
 Trip Details:
 
@@ -152,6 +153,21 @@ Recommend:
 Arrange locations practically.
 
 ---------------------------------------------------
+WHY VISIT HIGHLIGHTS
+---------------------------------------------------
+
+Generate exactly 4 destination highlights.
+
+Do not decide whether the weather is favorable.
+Always return exactly 4 highlights.
+
+Examples:
+
+- Perfect weather for sightseeing.
+- Excellent trekking season.
+- Beautiful mountain views.
+- Rich local culture.
+---------------------------------------------------
 IMPORTANT
 ---------------------------------------------------
 
@@ -175,6 +191,13 @@ Return ONLY valid JSON.
             "afternoon":"...",
             "evening":"..."
         }
+    ],
+
+    "highlights":[
+        "...",
+        "...",
+        "...",
+        "..."
     ]
 }
 

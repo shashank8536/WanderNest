@@ -1,6 +1,8 @@
 const axios = require("axios");
 const Listing = require("../models/listing");
 const { generateTravelPlan } = require("../services/geminiService");
+const { getTravelStatus } = require("../services/travelInsight");
+
 module.exports.renderTravelAssistant = (req, res) => {
     res.render("listings/travel-assistant");
 };
@@ -33,6 +35,28 @@ module.exports.generateTravelPlan = async (req, res) => {
         const currentMonth = new Date().toLocaleString("en-US", {
             month: "long",
         });
+        const travelInsights = getTravelStatus(
+            searchDestination,
+            weatherData
+        );
+        let alternativeListings = [];
+
+        if (travelInsights.type === "alternative") {
+
+            const alternativeLocations =
+                travelInsights.alternatives.map(
+                    (place) => place.name
+                );
+
+            alternativeListings = await Listing.find({
+                location: {
+                    $in: alternativeLocations
+                }
+            }).limit(3);
+
+        }
+        console.log("Travel Insights:");
+        console.log(travelInsights);
         const aiResponse = await generateTravelPlan(
             destination,
             req.body.month,
@@ -43,6 +67,12 @@ module.exports.generateTravelPlan = async (req, res) => {
         );
 
         const aiData = JSON.parse(aiResponse);
+        console.log("AI DATA:");
+        console.log(aiData);
+
+        if (travelInsights.type === "whyVisit") {
+            travelInsights.highlights = aiData.highlights || [];
+        }
 
         // console.log("Destination received:", destination);
 
@@ -74,11 +104,20 @@ module.exports.generateTravelPlan = async (req, res) => {
 
         return res.json({
             success: true,
+
             weather: weatherData,
+
             packingList: aiData.packingList,
+
             travelAdvisory: aiData.travelAdvisory,
+
             itinerary: aiData.itinerary,
-            recommendedStays
+
+            recommendedStays,
+
+            travelInsights,
+
+            alternativeListings
         });
     } catch (err) {
 

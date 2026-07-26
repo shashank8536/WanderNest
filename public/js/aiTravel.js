@@ -233,12 +233,112 @@ function initTravelForm() {
     `;
 
       } else {
-
         result.recommendedStays.forEach((listing) => {
-
           staysGrid.innerHTML += `
-        
         <div class="col position-relative">
+            <a href="/listings/${listing._id}" class="listing-link">
+                <div class="card listing-card">
+                    <img
+                        src="${listing.image.url}"
+                        class="card-img-top"
+                        alt="${listing.title}"
+                        style="height:20rem;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body mt-2">
+                        <p class="card-text">
+                            <b>${listing.title}</b>
+                            <br>
+                            ₹${listing.price.toLocaleString("en-IN")} / night
+                            <br>
+                            <small>${listing.location}</small>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        `;
+
+        });
+      }
+      // ===============================
+      // Travel Insights Section
+      // ===============================
+
+      const insightsSection = document.getElementById("travelInsightsSection");
+      const insightsTitle = document.getElementById("travelInsightsTitle");
+      const insightsReason = document.getElementById("travelInsightsReason");
+      const insightsContainer = document.getElementById("travelInsightsContainer");
+
+      insightsSection.style.display = "block";
+      insightsContainer.innerHTML = "";
+      if (result.travelInsights.type === "whyVisit") {
+
+        insightsTitle.innerHTML = `
+        <i class="fa-solid fa-star text-warning me-2"></i>
+        Why Visit This Place Now?
+    `;
+
+        insightsReason.textContent = result.travelInsights.reason;
+
+        const highlights = result.travelInsights.highlights || [];
+
+        insightsContainer.innerHTML = `
+        <div class="col-12">
+            <div class="assistant-card">
+
+                ${highlights.length > 0
+            ? `
+                        <ul class="mb-0">
+                            ${highlights.map(item => `
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-circle-check text-success me-2"></i>
+                                    ${item}
+                                </li>
+                            `).join("")}
+                        </ul>
+                    `
+            : `
+                        <p class="mb-0">
+                            This destination offers a wonderful travel experience with beautiful attractions and local culture.
+                        </p>
+                    `
+          }
+
+            </div>
+        </div>
+    `;
+      }
+      else {
+        insightsTitle.innerHTML =
+          `<i class="fa-solid fa-route text-danger me-2"></i>
+        Smart Alternatives`;
+        insightsReason.textContent = result.travelInsights.reason;
+        if (result.alternativeListings.length === 0) {
+          insightsContainer.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <strong>No alternative WanderNest stays available.</strong>
+                    <br><br>
+                    Suggested destinations:
+                    <ul class="mt-2 mb-0">
+                        ${result.travelInsights.alternatives
+              .map(place => `
+                                <li>
+                                    <strong>${place.name}</strong>
+                                    — ${place.reason}
+                                </li>
+                            `)
+              .join("")}
+                    </ul>
+                </div>
+            </div>
+        `;
+        }
+        else {
+          result.alternativeListings.forEach((listing) => {
+
+            insightsContainer.innerHTML += `
+        <div class="col-lg-4 col-md-6">
 
             <a href="/listings/${listing._id}" class="listing-link">
 
@@ -247,26 +347,18 @@ function initTravelForm() {
                     <img
                         src="${listing.image.url}"
                         class="card-img-top"
-                        alt="${listing.title}"
-                        style="height:20rem;">
+                        style="height:20rem;"
+                        alt="${listing.title}">
 
-                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
 
-                    <div class="card-body mt-2">
+                        <h5>${listing.title}</h5>
 
-                        <p class="card-text">
+                        <p>${listing.location}</p>
 
-                            <b>${listing.title}</b>
-
-                            <br>
-
+                        <strong>
                             ₹${listing.price.toLocaleString("en-IN")} / night
-
-                            <br>
-
-                            <small>${listing.location}</small>
-
-                        </p>
+                        </strong>
 
                     </div>
 
@@ -275,12 +367,12 @@ function initTravelForm() {
             </a>
 
         </div>
+    `;
 
-        `;
-
-        });
-
+          });
+        }
       }
+
     } catch (err) {
       console.error(err);
     } finally {
