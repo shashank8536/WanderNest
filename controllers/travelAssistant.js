@@ -1,7 +1,6 @@
 const axios = require("axios");
 const Listing = require("../models/listing");
 const { generateTravelPlan } = require("../services/geminiService");
-const { getTravelStatus } = require("../services/travelInsight");
 
 module.exports.renderTravelAssistant = (req, res) => {
     res.render("listings/travel-assistant");
@@ -35,43 +34,78 @@ module.exports.generateTravelPlan = async (req, res) => {
         const currentMonth = new Date().toLocaleString("en-US", {
             month: "long",
         });
-        const travelInsights = getTravelStatus(
-            searchDestination,
-            weatherData
-        );
-        let alternativeListings = [];
-
-        if (travelInsights.type === "alternative") {
-
-            const alternativeLocations =
-                travelInsights.alternatives.map(
-                    (place) => place.name
-                );
-
-            alternativeListings = await Listing.find({
-                location: {
-                    $in: alternativeLocations
-                }
-            }).limit(3);
-
-        }
-        console.log("Travel Insights:");
-        console.log(travelInsights);
+        const weatherSummary = `
+            Temperature: ${weatherData.temperature}°C
+            Feels Like: ${weatherData.feelsLike}°C
+            Weather: ${weatherData.weather}
+            Description: ${weatherData.description}
+            Humidity: ${weatherData.humidity}%
+            Wind Speed: ${weatherData.windSpeed} m/s
+        `;
         const aiResponse = await generateTravelPlan(
             destination,
             req.body.month,
             currentMonth,
             req.body.duration,
             req.body.travelType,
-            weatherData.description
+            weatherSummary
         );
 
-        const aiData = JSON.parse(aiResponse);
+        let aiData;
+
+        try {
+            aiData = JSON.parse(aiResponse);
+        } catch (parseError) {
+            console.error("Gemini returned invalid JSON:");
+            console.error(aiResponse);
+
+            return res.status(500).json({
+                success: false,
+                message: "Failed to generate a valid AI travel plan."
+            });
+        }
+
+        if (
+            !aiData ||
+            !Array.isArray(aiData.packingList) ||
+            !Array.isArray(aiData.travelAdvisory) ||
+            !Array.isArray(aiData.itinerary) ||
+            !aiData.travelInsights
+        ) {
+            return res.status(500).json({
+                success: false,
+                message: "Incomplete AI response received."
+            });
+        }
+
         console.log("AI DATA:");
         console.log(aiData);
 
-        if (travelInsights.type === "whyVisit") {
-            travelInsights.highlights = aiData.highlights || [];
+        const travelInsights = aiData.travelInsights;
+        let alternativeListings = [];
+
+        if (travelInsights.type === "alternative") {
+
+            const alternativeLocations = travelInsights.alternatives.map(
+                (place) => place.name
+            );
+
+            alternativeListings = await Listing.find({
+                $or: alternativeLocations.flatMap(place => ([
+                    {
+                        location: {
+                            $regex: place,
+                            $options: "i"
+                        }
+                    },
+                    {
+                        country: {
+                            $regex: place,
+                            $options: "i"
+                        }
+                    }
+                ]))
+            }).limit(3);
         }
 
         // console.log("Destination received:", destination);

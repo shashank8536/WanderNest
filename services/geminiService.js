@@ -21,7 +21,7 @@ You must generate FOUR sections:
 1. Packing List
 2. Travel Advisory
 3. Travel Itinerary
-4. Why Visit Highlights
+4. Travel Insights
 
 Trip Details:
 
@@ -153,52 +153,143 @@ Recommend:
 Arrange locations practically.
 
 ---------------------------------------------------
-WHY VISIT HIGHLIGHTS
+TRAVEL INSIGHTS
 ---------------------------------------------------
 
-Generate exactly 4 destination highlights.
+You are an experienced travel advisor.
 
-Do not decide whether the weather is favorable.
-Always return exactly 4 highlights.
+Analyze ALL of the following before making a recommendation:
 
-Examples:
+- Current weather
+- Temperature
+- Weather description
+- Humidity
+- Wind conditions
+- Travel month
+- Seasonal conditions
+- Tourist experience
+- Sightseeing comfort
+- Accessibility
+- Safety
+- Outdoor activity suitability
 
-- Perfect weather for sightseeing.
-- Excellent trekking season.
-- Beautiful mountain views.
-- Rich local culture.
+Decide whether this destination should be recommended.
+
+If current weather or seasonal conditions are likely to significantly affect the travel experience or safety, return:
+
+"type": "alternative"
+
+Otherwise return:
+
+"type": "whyVisit"
+
+Rules:
+
+If type is "whyVisit":
+
+- Generate exactly 4 highlights.
+- Explain why this is a good time to visit.
+
+If type is "alternative":
+
+- Leave highlights empty.
+- Suggest exactly 3 alternative destinations.
+- Explain why each alternative is better.
+
+Think like an experienced travel planner rather than simply describing the weather.
+
+Do not make recommendations based only on tourist popularity.
+
+Consider whether a traveler would actually enjoy the trip under the given weather and seasonal conditions.
+
+If sightseeing, trekking, beach activities, or transportation are likely to be severely affected, recommend alternatives.
+
+Do not recommend unsafe travel.
 ---------------------------------------------------
 IMPORTANT
 ---------------------------------------------------
 
+Do not always recommend the destination.
+
+If the weather or seasonal conditions make travel unsafe, uncomfortable, or significantly reduce the overall experience, recommend better alternative destinations instead.
+
+Your recommendation should prioritize traveler safety, comfort, and overall experience over simply listing attractions.
+
+Ensure all recommendations are internally consistent.
+
+Rules:
+
+- If "type" is "whyVisit":
+  - Generate exactly 4 highlights.
+  - Alternatives must be an empty array.
+
+- If "type" is "alternative":
+  - Highlights must be an empty array.
+  - Generate exactly 3 alternative destinations.
+
+Never return both highlights and alternatives together.
+
+Always keep the JSON structure exactly as specified.
+
+If you return:
+
+"type": "whyVisit"
+
+then:
+
+- highlights must contain exactly 4 items.
+- alternatives must be [].
+
+If you return:
+
+"type": "alternative"
+
+then:
+
+- highlights must be [].
+- alternatives must contain exactly 3 destinations.
+
+Never leave either field undefined.
+
 Return ONLY valid JSON.
 
 {
-    "packingList":[
+    "packingList": [
         "...",
         "..."
     ],
 
-    "travelAdvisory":[
+    "travelAdvisory": [
         "...",
         "..."
     ],
 
-    "itinerary":[
+    "itinerary": [
         {
-            "day":1,
-            "morning":"...",
-            "afternoon":"...",
-            "evening":"..."
+            "day": 1,
+            "morning": "...",
+            "afternoon": "...",
+            "evening": "..."
         }
     ],
 
-    "highlights":[
-        "...",
-        "...",
-        "...",
-        "..."
-    ]
+    "travelInsights": {
+        "type": "whyVisit OR alternative",
+        "reason": "...",
+        "highlights": [
+            "...",
+            "...",
+            "...",
+            "..."
+        ],
+        "alternatives": [
+            {
+                "name": "...",
+                "reason": "...",
+                "bestFor": "..."
+            }
+        ]
+    }
 }
 
 Do NOT explain anything.

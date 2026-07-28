@@ -104,6 +104,18 @@ function initTravelForm() {
 
       const result = await response.json();
 
+      if (
+        !result.success ||
+        !result.weather ||
+        !result.packingList ||
+        !result.travelAdvisory ||
+        !result.itinerary ||
+        !result.travelInsights
+      ) {
+        alert(result.message || "Invalid response received.");
+        return;
+      }
+
       if (!result.success) {
         alert(result.message);
         return;
@@ -375,6 +387,10 @@ function initTravelForm() {
 
     } catch (err) {
       console.error(err);
+
+      alert(
+        "Unable to generate your travel plan right now. Please try again."
+      );
     } finally {
 
       submitBtn.disabled = false;
