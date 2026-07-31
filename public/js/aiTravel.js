@@ -78,6 +78,77 @@ function hideLoader(scrollTargetId) {
   }, 380);
 }
 
+/* ─── Weather Card Updater ─────────────────────────────────────────────────── */
+
+/**
+ * Maps an OpenWeather condition string to a data-wx theme key and a
+ * clean human-readable badge label, then updates the weather card DOM.
+ *
+ * @param {object} weather - The weather object from the API response.
+ */
+function updateWeatherCard(weather) {
+  // ── Condition → theme + badge label map ──────────────────────────────────
+  const CONDITION_MAP = {
+    Clear:         { wx: "clear",  label: "Sunny"  },
+    Clouds:        { wx: "clouds", label: "Cloudy" },
+    Rain:          { wx: "rain",   label: "Rainy"  },
+    Drizzle:       { wx: "rain",   label: "Rainy"  },
+    Snow:          { wx: "snow",   label: "Snow"   },
+    Mist:          { wx: "mist",   label: "Mist"   },
+    Fog:           { wx: "mist",   label: "Mist"   },
+    Haze:          { wx: "mist",   label: "Mist"   },
+    Smoke:         { wx: "mist",   label: "Mist"   },
+    Dust:          { wx: "mist",   label: "Mist"   },
+    Sand:          { wx: "mist",   label: "Mist"   },
+    Ash:           { wx: "mist",   label: "Mist"   },
+    Squall:        { wx: "storm",  label: "Storm"  },
+    Thunderstorm:  { wx: "storm",  label: "Storm"  },
+    Tornado:       { wx: "storm",  label: "Storm"  },
+  };
+
+  const theme = CONDITION_MAP[weather.weather] || {
+    wx: "clear",
+    label: weather.weather,
+  };
+
+  // ── Apply gradient theme ──────────────────────────────────────────────────
+  const card = document.querySelector(".weather-card-bg");
+  if (card) card.setAttribute("data-wx", theme.wx);
+
+  // ── Weather icon (OpenWeather CDN) ────────────────────────────────────────
+  const iconEl = document.getElementById("weatherIcon");
+  if (iconEl && weather.icon) {
+    iconEl.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
+    iconEl.alt = weather.description || "Weather icon";
+  }
+
+  // ── Text fields (reusing all existing IDs) ────────────────────────────────
+
+  // Resolve ISO country code (e.g. "IN") to full name (e.g. "India")
+  let countryName = weather.country;
+  try {
+    countryName = new Intl.DisplayNames(["en"], { type: "region" }).of(weather.country) || weather.country;
+  } catch (_) {
+    // Intl.DisplayNames not supported; fall back to code
+  }
+
+  document.getElementById("weatherCity").textContent =
+    `${weather.city}, ${countryName}`;
+
+  document.getElementById("weatherTemp").textContent =
+    `${weather.temperature}°C`;
+
+  document.getElementById("weatherCondition").textContent = theme.label;
+
+  document.getElementById("weatherDescription").textContent = weather.description;
+
+  document.getElementById("weatherHumidity").textContent =
+    `Humidity: ${weather.humidity}%`;
+
+  document.getElementById("weatherWind").textContent =
+    `Wind: ${weather.windSpeed} m/s`;
+}
+
 /* ─── App Init ─────────────────────────────────────────────────────────────── */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -121,6 +192,12 @@ function initChecklist() {
 
     if (progressBadge) {
       progressBadge.textContent = `${checkedItems}/${totalItems} Packed`;
+
+      // Trigger subtle pop animation on each update
+      progressBadge.classList.remove("badge-updated");
+      // Force a reflow so removing+re-adding the class restarts the animation
+      void progressBadge.offsetWidth;
+      progressBadge.classList.add("badge-updated");
     }
   }
 
@@ -215,25 +292,8 @@ function initTravelForm() {
         return;
       }
 
-      const weather = result.weather;
-
-      document.getElementById("weatherCity").textContent =
-        `${weather.city}, ${weather.country}`;
-
-      document.getElementById("weatherTemp").textContent =
-        `${weather.temperature}°C`;
-
-      document.getElementById("weatherCondition").textContent =
-        weather.weather;
-
-      document.getElementById("weatherDescription").textContent =
-        weather.description;
-
-      document.getElementById("weatherHumidity").textContent =
-        `Humidity: ${weather.humidity}%`;
-
-      document.getElementById("weatherWind").textContent =
-        `Wind: ${weather.windSpeed} m/s`;
+      // Update weather card (gradient, icon, badge, all text fields)
+      updateWeatherCard(result.weather);
 
       // Update Packing Essentials
       const packingGrid = document.getElementById("packingGrid");

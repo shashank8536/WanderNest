@@ -129,47 +129,37 @@
 
       <!-- Weather Card -->
       <div class="col-lg-5">
-        <div class="assistant-card weather-card-bg h-100">
+        <div class="assistant-card weather-card-bg h-100" data-wx="clear">
           <div class="weather-card-content d-flex flex-column justify-content-between h-100 w-100">
 
+            <!-- Top row: label + condition badge -->
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <p class="text-white-50 small mb-1 fw-bold">
-                  Weather Forecast
-                </p>
-
-                <h3 id="weatherCity" class="text-white fw-bold mb-0">
-                  Tokyo, Japan
-                </h3>
+                <p class="wx-label">Weather Forecast</p>
+                <h3 id="weatherCity" class="wx-city">Tokyo, Japan</h3>
               </div>
-
               <div class="weather-badge">
-                <span id="weatherCondition">Perfect</span>
+                <span id="weatherCondition">Sunny</span>
               </div>
             </div>
 
-            <div class="mt-4 d-flex justify-content-between align-items-end">
-
-              <div>
-                <h2 id="weatherTemp" class="display-4 text-white fw-bold mb-0" style="font-size:3.5rem;">
-                  22°C
-                </h2>
-
-                <p id="weatherDescription" class="text-white mb-0 small">
-                  Partly Sunny
-                </p>
+            <!-- Bottom row: icon + temp on left, detail chips on right -->
+            <div class="wx-bottom-row">
+              <div class="wx-temp-row">
+                <img id="weatherIcon"
+                  class="wx-icon"
+                  src="https://openweathermap.org/img/wn/01d@2x.png"
+                  alt="Weather condition icon">
+                <div>
+                  <h2 id="weatherTemp" class="wx-temp">22°C</h2>
+                  <p id="weatherDescription" class="wx-desc">Partly Sunny</p>
+                </div>
               </div>
 
-              <div class="text-end">
-                <p id="weatherHumidity" class="text-white-50 mb-1 small">
-                  Humidity: 0%
-                </p>
-
-                <p id="weatherWind" class="text-white-50 mb-0 small">
-                  Wind: 0 km/h
-                </p>
+              <div class="wx-chips">
+                <p id="weatherHumidity" class="wx-chip">Humidity: 0%</p>
+                <p id="weatherWind" class="wx-chip">Wind: 0 m/s</p>
               </div>
-
             </div>
 
           </div>
