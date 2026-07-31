@@ -36,7 +36,7 @@ module.exports.generateTravelPlan = async (req, res) => {
         const place = geoResponse.body.features[0];
         const searchDestination = place.text;
 
-       //  console.log("Mapbox Place:", place.place_name);
+        //  console.log("Mapbox Place:", place.place_name);
 
         const [longitude, latitude] = place.geometry.coordinates;
 

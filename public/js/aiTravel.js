@@ -1,5 +1,85 @@
 /* WanderNest AI Travel Assistant JS */
 
+/* ─── Loading Overlay ─────────────────────────────────────────────────────── */
+
+const AI_LOADING_MESSAGES = [
+  "Checking live weather...",
+  "Planning your itinerary...",
+  "Finding the best stays...",
+  "Finalizing your travel plan...",
+];
+
+let _loadingMsgInterval = null;
+let _scrollTimeout = null;
+
+function showLoader() {
+  const overlay = document.getElementById("aiLoadingOverlay");
+  const msgEl   = document.getElementById("aiLoadingMessage");
+  if (!overlay) return;
+
+  // Guard: clear any interval that may have survived a prior call
+  if (_loadingMsgInterval !== null) {
+    clearInterval(_loadingMsgInterval);
+    _loadingMsgInterval = null;
+  }
+
+  overlay.setAttribute("aria-hidden", "false");
+  overlay.classList.remove("is-fading-out");
+  overlay.classList.add("is-active");
+
+  // Prevent background scroll while overlay is open
+  document.body.style.overflow = "hidden";
+
+  // Cycle through loading messages
+  let idx = 0;
+  msgEl.textContent = AI_LOADING_MESSAGES[0];
+
+  _loadingMsgInterval = setInterval(() => {
+    msgEl.classList.add("fade-swap");
+    // Single inner setTimeout — fires once per tick, no recursion
+    setTimeout(() => {
+      idx = (idx + 1) % AI_LOADING_MESSAGES.length;
+      msgEl.textContent = AI_LOADING_MESSAGES[idx];
+      msgEl.classList.remove("fade-swap");
+    }, 300);
+  }, 1800);
+}
+
+function hideLoader(scrollTargetId) {
+  // Stop message cycling
+  clearInterval(_loadingMsgInterval);
+  _loadingMsgInterval = null;
+
+  // Cancel any pending scroll from a previous call
+  if (_scrollTimeout !== null) {
+    clearTimeout(_scrollTimeout);
+    _scrollTimeout = null;
+  }
+
+  const overlay = document.getElementById("aiLoadingOverlay");
+  if (!overlay) return;
+
+  overlay.classList.add("is-fading-out");
+  overlay.classList.remove("is-active");
+  overlay.setAttribute("aria-hidden", "true");
+
+  // Restore background scroll
+  document.body.style.overflow = "";
+
+  // Scroll after the CSS fade transition completes (350ms + small buffer)
+  _scrollTimeout = setTimeout(() => {
+    _scrollTimeout = null;
+    if (scrollTargetId) {
+      const target = document.getElementById(scrollTargetId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, 380);
+}
+
+/* ─── App Init ─────────────────────────────────────────────────────────────── */
+
 document.addEventListener("DOMContentLoaded", () => {
   initPills();
   initChecklist();
@@ -81,16 +161,30 @@ function initTravelForm() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const submitBtn = form.querySelector("button[type='submit']");
+    const submitBtn      = form.querySelector("button[type='submit']");
+    const destinationEl  = document.getElementById("destination");
+    const budgetEl       = document.getElementById("budget");
+    const durationEl     = document.getElementById("duration");
+    const travelMonthEl  = document.getElementById("travelMonth");
 
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        Generating...
-    `;
-
+    
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
+
+
+    // Disable submit button and all form inputs to prevent accidental edits
+    submitBtn.disabled     = true;
+    destinationEl.disabled = true;
+    budgetEl.disabled      = true;
+    durationEl.disabled    = true;
+    travelMonthEl.disabled = true;
+
+    submitBtn.innerHTML = `
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        Generate Travel Plan
+    `;
+
+    showLoader();
 
     try {
 
@@ -393,11 +487,19 @@ function initTravelForm() {
       );
     } finally {
 
-      submitBtn.disabled = false;
+      // Re-enable all inputs
+      submitBtn.disabled     = false;
+      destinationEl.disabled = false;
+      budgetEl.disabled      = false;
+      durationEl.disabled    = false;
+      travelMonthEl.disabled = false;
+
       submitBtn.innerHTML = `
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             Generate Travel Plan
         `;
+
+      hideLoader("timelineContainer");
     }
   });
 }
