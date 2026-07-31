@@ -564,7 +564,38 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.advisory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.advisory-item {
+  border-left: 3px solid #ffc107;
+  background: rgba(255, 193, 7, 0.06);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.7rem 1rem;
+  transition: background 0.25s ease;
+}
+
+.advisory-item:hover {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.advisory-item p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #5c4800;
+}
+
+@media (max-width: 576px) {
+  .advisory-item {
+    padding: 0.55rem 0.8rem;
+  }
 }
 
 /* ==========================================
@@ -659,7 +690,14 @@
 .dark-mode .advisory-card h4 {
   color: #ffeba0;
 }
-.dark-mode .advisory-card p {
+.dark-mode .advisory-item {
+  background: rgba(255, 193, 7, 0.07);
+  border-left-color: #ffc107;
+}
+.dark-mode .advisory-item:hover {
+  background: rgba(255, 193, 7, 0.12);
+}
+.dark-mode .advisory-item p {
   color: #ddd;
 }
 
@@ -862,6 +900,12 @@
   background: var(--bg-light);
   border-radius: var(--border-radius);
   border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Force empty state to always span full row width,
+   overriding the row-cols-lg-3 > * width rule */
+#recommendedStaysGrid > .col-12 {
+  width: 100%;
 }
 
 .stays-empty-title {

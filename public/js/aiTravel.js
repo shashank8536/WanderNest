@@ -318,12 +318,10 @@ function initTravelForm() {
 
       initChecklist();
 
-      //  ADD THIS HERE (Travel Advisory)
-      const advisoryText = document.getElementById("travelAdvisoryText");
-
-      advisoryText.innerHTML = result.travelAdvisory
-        .map(item => `• ${item}`)
-        .join("<br>");
+      const advisoryList = document.getElementById("travelAdvisoryList");
+      advisoryList.innerHTML = result.travelAdvisory
+        .map(item => `<div class="advisory-item"><p>${item}</p></div>`)
+        .join("");
 
       // Update Itinerary
       const timelineContainer = document.getElementById("timelineContainer");
