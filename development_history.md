@@ -133,3 +133,108 @@ This document tracks all features, changes, and architectural decisions made dur
 *   **[app.js](file:///c:/Users/Shashank%20Shekhar/Desktop/projects/WanderNest/app.js)**
     *   *Change:* Mounted a GET route `/travel-assistant` rendering the `listings/travel-assistant.ejs` view.
     *   *Why:* To expose the page to the web server and enable navigation.
+
+---
+
+## 📅 Phase 5 (Continued): AI Travel Assistant — Backend Integration (Completed 🟢)
+**Goal:** Connect the frontend travel planner form to a real AI pipeline backed by Google Gemini, OpenWeather API, and Mapbox Geocoding.
+
+### 1. AI Service
+*   **[services/geminiService.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/services/geminiService.js) [NEW]**
+    *   *Change:* Integrated `@google/genai` SDK. Wrote the `generateTravelPlan()` function that builds a structured prompt from destination, travel month, current month, duration, travel type, and live weather data. The prompt enforces strict JSON output with four sections — `packingList` (array), `travelAdvisory` (array), `itinerary` (day-by-day morning/afternoon/evening objects), and `travelInsights` (either `whyVisit` with highlights, or `alternative` with nearby suggestions).
+    *   *Why:* Isolating AI logic into a service keeps the controller thin and makes the Gemini integration replaceable without touching routing.
+
+### 2. Controller
+*   **[controllers/travelAssistant.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/controllers/travelAssistant.js) [NEW]**
+    *   *Change:* Implemented two controller actions:
+        *   `renderTravelAssistant`: Simple GET handler rendering `listings/travel-assistant.ejs`.
+        *   `generateTravelPlan`: Full async pipeline — Mapbox forward geocoding to resolve the destination to coordinates, OpenWeather API call (`/data/2.5/weather`) for live weather data, Gemini AI plan generation, MongoDB queries for recommended stays (matched by location/country regex) and alternative listings (when AI suggests alternatives), and a validated JSON response containing all sections.
+    *   *Details:* Includes strict validation — rejects incomplete AI responses, handles Mapbox 404s, protects against JSON parse failures with a dedicated `try/catch` block.
+    *   *Why:* Keeps all business logic server-side, preventing API key exposure and ensuring the frontend receives a guaranteed-shape response.
+
+### 3. Routes
+*   **[routes/travelAssistant.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/routes/travelAssistant.js) [NEW]**
+    *   *Change:* Mounted `GET /travel-assistant` (renders form) and `POST /travel-assistant/generate` (runs the full AI pipeline).
+    *   *Why:* Decouples travel assistant routing from the main listing router.
+
+### 4. Frontend AJAX Integration
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* Added `initTravelForm()` — intercepts form submit, sends a `fetch` POST with JSON body, receives the structured response, and renders all sections dynamically: weather card, packing checklist, travel advisory, day-by-day itinerary timeline, recommended stays grid, and smart alternatives section.
+    *   *Why:* Full-page reloads would lose scroll context and feel sluggish. AJAX keeps the experience fast and seamless.
+
+---
+
+## 📅 Phase 6: UI Polishing — AI Travel Assistant Page (Completed 🟢)
+**Goal:** Polish the AI Travel Assistant page to a production-ready, premium standard without redesigning or breaking any existing functionality.
+
+---
+
+### 6.1 — AI Loading Overlay
+
+**Commit:** `Polish Loading Experience in Ai Travel Assistant page`
+
+*   **[views/listings/travel-assistant.ejs](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/views/listings/travel-assistant.ejs)**
+    *   *Change:* Added a full-screen `#aiLoadingOverlay` div (inserted before the main container). Contains a CSS spinner, the title "WanderNest AI", a static subtitle, and a cycling `#aiLoadingMessage` paragraph.
+    *   *Why:* The form previously only disabled the button — there was no visual feedback for the 5–10 second AI generation wait.
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   *Change:* Added `.ai-loading-overlay`, `.ai-loading-card`, `.ai-spinner` (pure CSS ring spinner using `border-top-color`), `.ai-loading-title`, `.ai-loading-subtitle`, and `.ai-loading-message` styles. Overlay uses `backdrop-filter: blur(10px)` and `visibility + opacity` transitions for a clean fade. Full dark mode and mobile responsive styles included.
+    *   *Design decisions:* Uses existing `--brand-color` and `--text-muted-color` CSS variables for zero palette mismatch. No external libraries.
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* Added two module-level utility functions:
+        *   `showLoader()` — activates overlay, locks `body.overflow`, starts a message cycling `setInterval` (every 1.8s with a 300ms opacity fade between messages). Includes a guard to clear any pre-existing interval before starting.
+        *   `hideLoader(scrollTargetId)` — clears interval, restores scroll, fades overlay out via CSS class swap, then after 380ms (matching transition duration) smoothly scrolls to the results section.
+    *   Both functions track their timers in module-scope variables (`_loadingMsgInterval`, `_scrollTimeout`) so they can be safely cancelled on re-entry.
+    *   *Why:* Prevents timer leaks on rapid form resubmission and ensures a professional non-janky experience.
+
+---
+
+### 6.2 — Loading Overlay Safety Hardening
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* Added `document.body.style.overflow = "hidden"` inside `showLoader()` and `""` reset inside `hideLoader()` to prevent background scrolling while the overlay is active.
+    *   *Change:* Extended the form submit handler to disable all four form inputs (`destination`, `budget`, `duration`, `travelMonth`) alongside the submit button. All four are re-enabled in the `finally` block symmetrically.
+    *   *Why:* Prevents accidental field edits during a pending request and makes the page feel fully locked — consistent with production-grade form UX.
+
+---
+
+### 6.3 — Premium Weather Card Upgrade
+
+*   **[views/listings/travel-assistant.ejs](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/views/listings/travel-assistant.ejs)**
+    *   *Change:* Restructured the weather card interior. Added `data-wx="clear"` attribute to `.weather-card-bg` (JS sets this dynamically per response). Added `<img id="weatherIcon">` (OpenWeather CDN icon). Replaced plain `<p>` humidity/wind tags with `.wx-chip` classed elements. Removed the inline `font-size: 3.5rem` style (moved to CSS). All 6 existing IDs (`weatherCity`, `weatherTemp`, `weatherCondition`, `weatherDescription`, `weatherHumidity`, `weatherWind`) were preserved unchanged.
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   *Change:* Replaced the Unsplash image background and `::before` tint overlay entirely. The card now uses pure CSS gradients driven by the `data-wx` attribute:
+
+        | `data-wx` value | Gradient | Condition |
+        |---|---|---|
+        | `clear` | Amber → Orange | Sunny |
+        | `clouds` | Dark Slate → Mid Slate | Cloudy |
+        | `rain` | Deep Navy → Royal Blue | Rain/Drizzle |
+        | `snow` | Sky Blue → Pale Blue | Snow |
+        | `mist` | Mid Gray → Light Gray | Mist/Fog/Haze |
+        | `storm` | Near Black → Dark Charcoal | Thunderstorm/Tornado |
+
+    *   Added `background 0.5s ease` to the card's `transition` so gradient swaps animate smoothly between results.
+    *   Added new utility classes: `.wx-label`, `.wx-city`, `.wx-temp-row`, `.wx-bottom-row`, `.wx-icon`, `.wx-temp`, `.wx-desc`, `.wx-chips`, `.wx-chip`.
+    *   Added subtle hover lift (`translateY(-2px)`).
+    *   Full mobile responsive styles at `< 576px`.
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* Added `updateWeatherCard(weather)` utility function. Contains a `CONDITION_MAP` covering all 15 OpenWeather main condition strings. Sets `data-wx` on the card element, updates `#weatherIcon` src using the OpenWeather `@2x.png` CDN pattern, and updates all 6 existing text IDs. Replaces the previous 19-line inline weather update block with a single `updateWeatherCard(result.weather)` call.
+
+---
+
+### 6.4 — Micro-Polish Pass
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   **Icon size:** `.wx-icon` increased from `56px` to `72px` with a stronger `drop-shadow` — makes the weather icon a visual anchor beside the temperature.
+    *   **Chip padding:** `.wx-chip` padding increased from `0.28rem 0.75rem` to `0.4rem 1rem` for more breathing room.
+    *   **Temperature weight:** `.wx-temp` `font-weight` increased from `800` to `900`, `letter-spacing` tightened to `-0.03em` — temperature now visually dominates the card.
+    *   **Card height:** `min-height` raised from `240px` to `260px` to fill empty vertical space.
+    *   **Packing badge animation:** Added `@keyframes badge-pop` (scale `1 → 1.12 → 1`, `0.3s ease`) and `.pack-progress-badge.badge-updated` trigger class.
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   **Country full name:** In `updateWeatherCard()`, the ISO country code (e.g. `"IN"`) is resolved to the full name (e.g. `"India"`) using `Intl.DisplayNames(['en'], { type: 'region' })`. Wrapped in `try/catch` for browsers that don't support the API — falls back to the raw code silently.
+    *   **Badge pop animation:** In `updateProgress()`, each checklist interaction now removes `.badge-updated`, forces a DOM reflow (`void progressBadge.offsetWidth`), then re-adds the class — correctly restarting the CSS animation on every check/uncheck.

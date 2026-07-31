@@ -791,3 +791,123 @@
   }
 }
 
+/* ==========================================
+   Recommended Stays Cards
+   ========================================== */
+
+.stays-card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.stays-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.stays-card-body {
+  padding: 0.9rem 0.25rem 0.5rem;
+}
+
+.stays-card-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #222;
+  margin: 0 0 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stays-card-location {
+  font-size: 0.82rem;
+  color: var(--text-muted-color);
+  margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stays-card-location i {
+  color: var(--brand-color);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.stays-card-price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.stays-card-price span {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--text-muted-color);
+}
+
+/* Empty state */
+.stays-empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--bg-light);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.stays-empty-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 0.5rem;
+}
+
+.stays-empty-sub {
+  font-size: 0.875rem;
+  color: var(--text-muted-color);
+  margin: 0 0 1.5rem;
+}
+
+.stays-explore-btn {
+  width: auto;
+  height: auto;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Dark mode */
+.dark-mode .stays-card {
+  background: #1c1c1c;
+}
+
+.dark-mode .stays-card:hover {
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.06);
+}
+
+.dark-mode .stays-card-title {
+  color: #f0f0f0;
+}
+
+.dark-mode .stays-card-price {
+  color: #eee;
+}
+
+.dark-mode .stays-empty-state {
+  background: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .stays-empty-title {
+  color: #e0e0e0;
+}
+
+

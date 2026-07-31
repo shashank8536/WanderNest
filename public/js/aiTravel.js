@@ -390,40 +390,37 @@ function initTravelForm() {
       if (result.recommendedStays.length === 0) {
 
         staysGrid.innerHTML = `
-        <div class="col-12 text-center py-5">
-            <h5>No WanderNest stays found.</h5>
-            <p class="text-muted">
-                Try another nearby destination.
-            </p>
-        </div>
-    `;
+        <div class="col-12">
+          <div class="stays-empty-state">
+            <p class="stays-empty-title">No WanderNest stays found near this destination.</p>
+            <p class="stays-empty-sub">Try exploring nearby destinations or search manually.</p>
+            <a href="/listings" class="btn btn-generate stays-explore-btn">Explore All Listings</a>
+          </div>
+        </div>`;
 
       } else {
         result.recommendedStays.forEach((listing) => {
           staysGrid.innerHTML += `
-        <div class="col position-relative">
-            <a href="/listings/${listing._id}" class="listing-link">
-                <div class="card listing-card">
-                    <img
-                        src="${listing.image.url}"
-                        class="card-img-top"
-                        alt="${listing.title}"
-                        style="height:20rem;">
-                    <div class="card-img-overlay"></div>
-                    <div class="card-body mt-2">
-                        <p class="card-text">
-                            <b>${listing.title}</b>
-                            <br>
-                            ₹${listing.price.toLocaleString("en-IN")} / night
-                            <br>
-                            <small>${listing.location}</small>
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        `;
-
+        <div class="col">
+          <a href="/listings/${listing._id}" class="listing-link">
+            <div class="card listing-card stays-card">
+              <img
+                src="${listing.image.url}"
+                class="card-img-top"
+                alt="${listing.title}"
+                style="height: 20rem;">
+              <div class="card-img-overlay"></div>
+              <div class="card-body stays-card-body">
+                <p class="stays-card-title">${listing.title}</p>
+                <p class="stays-card-location">
+                  <i class="fa-solid fa-location-dot"></i>
+                  ${listing.location}, ${listing.country}
+                </p>
+                <p class="stays-card-price">&#8377;${listing.price.toLocaleString("en-IN")} <span>/ night</span></p>
+              </div>
+            </div>
+          </a>
+        </div>`;
         });
       }
       // ===============================
