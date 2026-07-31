@@ -238,3 +238,39 @@ This document tracks all features, changes, and architectural decisions made dur
 *   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
     *   **Country full name:** In `updateWeatherCard()`, the ISO country code (e.g. `"IN"`) is resolved to the full name (e.g. `"India"`) using `Intl.DisplayNames(['en'], { type: 'region' })`. Wrapped in `try/catch` for browsers that don't support the API — falls back to the raw code silently.
     *   **Badge pop animation:** In `updateProgress()`, each checklist interaction now removes `.badge-updated`, forces a DOM reflow (`void progressBadge.offsetWidth`), then re-adds the class — correctly restarting the CSS animation on every check/uncheck.
+
+---
+
+### 6.5 — Recommended Stays & Travel Advisory Polish
+
+*   **[views/listings/travel-assistant.ejs](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/views/listings/travel-assistant.ejs)**
+    *   *Change:* Updated Recommended Stays header and row classes for correct Bootstrap grids (`g-4` gutters). Converted Travel Advisory `<p>` to `<div class="advisory-list" id="travelAdvisoryList">`.
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* Fixed leftover garbled HTML fragments in the Recommended Stays card template rendering block. 
+    *   *Change:* Updated Travel Advisory parsing to generate `.advisory-item` blocks for each advisory point instead of a single string joined by `<br>`.
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   *Change:* Added `.stays-card`, `.stays-card-body`, and `.stays-empty-state` styles to mirror the homepage's high-quality listing cards. Used ID specificity to resolve a Bootstrap `col-12` full-width override bug in the empty state.
+    *   *Change:* Created `.advisory-list` and `.advisory-item` styles. Each warning now features a subtle amber background, rounded right corners, and an amber left border to feel informative and scannable.
+
+---
+
+### 6.6 — Itinerary Timeline & Packing Checklist Polish
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   *Change:* Overhauled `.timeline-day-card` and `.timeline-event` styles. Removed noisy internal dashed lines and glowing borders. Established strong typographic hierarchy placing emphasis on the Day circle and bold headers. Refined hover states for cards `translateY(-3px)` and shadows.
+    *   *Change:* Redesigned `.packing-item-card` UX. Added a subtle scale down animation on checkbox active state `transform: scale(0.85)` and smoothed out hover and checked-state background tints. The progress badge now uses a branded tint background instead of the generic neutral background.
+
+---
+
+### 6.7 & 6.8 — Travel Insights & Micro Interactions Polish
+
+*   **[public/js/aiTravel.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/js/aiTravel.js)**
+    *   *Change:* For `whyVisit`, replaced standard `<ul>` lists with mapped `.highlight-card` items inside Bootstrap grid columns to create premium equal-height reason cards.
+    *   *Change:* For `alternative`, replaced the `.alert-warning` fallback block with `.insight-alt-card` blocks. Added rendering for the previously unused `bestFor` property natively provided by the backend API schema.
+    *   *Change:* Injected inline `animation-delay` attributes during mapping to execute staggered fade-in animations on load.
+
+*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
+    *   *Change:* Defined `.highlight-card` and `.insight-alt-card` with clean borders, padded interiors, and sophisticated hover lifts. 
+    *   *Change:* Added `@keyframes fadeInUpInsights` and `.fade-in-up` class to handle the smooth 0.4s staggered entrance of the insight cards. Integrated dark mode overrides perfectly preserving text contrast.

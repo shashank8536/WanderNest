@@ -443,31 +443,24 @@ function initTravelForm() {
 
         const highlights = result.travelInsights.highlights || [];
 
-        insightsContainer.innerHTML = `
-        <div class="col-12">
-            <div class="assistant-card">
-
-                ${highlights.length > 0
-            ? `
-                        <ul class="mb-0">
-                            ${highlights.map(item => `
-                                <li class="mb-2">
-                                    <i class="fa-solid fa-circle-check text-success me-2"></i>
-                                    ${item}
-                                </li>
-                            `).join("")}
-                        </ul>
-                    `
-            : `
-                        <p class="mb-0">
-                            This destination offers a wonderful travel experience with beautiful attractions and local culture.
-                        </p>
-                    `
-          }
-
-            </div>
-        </div>
-    `;
+        insightsContainer.innerHTML = highlights.length > 0
+          ? highlights.map((item, index) => `
+              <div class="col-lg-6 col-md-6 mb-3 fade-in-up" style="animation-delay: ${index * 0.05}s">
+                  <div class="highlight-card h-100">
+                      <div class="d-flex align-items-start">
+                          <i class="fa-solid fa-check text-success mt-1 me-3"></i>
+                          <p class="mb-0 desc">${item}</p>
+                      </div>
+                  </div>
+              </div>
+            `).join("")
+          : `
+              <div class="col-12 fade-in-up">
+                  <div class="highlight-card">
+                      <p class="mb-0 desc">This destination offers a wonderful travel experience with beautiful attractions and local culture.</p>
+                  </div>
+              </div>
+            `;
       }
       else {
         insightsTitle.innerHTML =
@@ -475,25 +468,16 @@ function initTravelForm() {
         Smart Alternatives`;
         insightsReason.textContent = result.travelInsights.reason;
         if (result.alternativeListings.length === 0) {
-          insightsContainer.innerHTML = `
-            <div class="col-12">
-                <div class="alert alert-warning">
-                    <strong>No alternative WanderNest stays available.</strong>
-                    <br><br>
-                    Suggested destinations:
-                    <ul class="mt-2 mb-0">
-                        ${result.travelInsights.alternatives
-              .map(place => `
-                                <li>
-                                    <strong>${place.name}</strong>
-                                    — ${place.reason}
-                                </li>
-                            `)
-              .join("")}
-                    </ul>
-                </div>
-            </div>
-        `;
+          insightsContainer.innerHTML = result.travelInsights.alternatives
+            .map((place, index) => `
+              <div class="col-lg-4 col-md-6 mb-3 fade-in-up" style="animation-delay: ${index * 0.05}s">
+                  <div class="insight-alt-card h-100">
+                      <h4 class="alt-title">${place.name}</h4>
+                      <p class="alt-reason">${place.reason}</p>
+                      ${place.bestFor ? `<p class="alt-best-for"><strong>Best for:</strong> ${place.bestFor}</p>` : ''}
+                  </div>
+              </div>
+            `).join("");
         }
         else {
           result.alternativeListings.forEach((listing) => {

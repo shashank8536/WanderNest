@@ -327,14 +327,14 @@
   100% { transform: scale(1); }
 }
 .pack-progress-badge {
-  background-color: var(--bg-light);
+  background-color: rgba(254, 66, 77, 0.08);
   color: var(--brand-color);
   font-weight: 700;
-  font-size: 0.8rem;
-  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 2rem;
   display: inline-block;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 .pack-progress-badge.badge-updated {
   animation: badge-pop 0.3s ease;
@@ -343,7 +343,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 }
 @media (max-width: 576px) {
   .packing-grid {
@@ -352,33 +352,39 @@
 }
 .packing-item-card {
   background: var(--bg-light);
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  padding: 0.9rem 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 1rem 1.25rem;
   border-radius: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 .packing-item-card:hover {
   background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
 }
 .packing-item-card input[type="checkbox"] {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.35rem;
+  height: 1.35rem;
   accent-color: var(--brand-color);
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.packing-item-card input[type="checkbox"]:active {
+  transform: scale(0.85);
 }
 .packing-item-card span {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.95rem;
-  color: #333;
+  color: #222;
+  transition: color 0.25s ease;
 }
 .packing-item-card.checked {
-  background: rgba(254, 66, 77, 0.03);
-  border-color: rgba(254, 66, 77, 0.1);
+  background: rgba(254, 66, 77, 0.04);
+  border-color: rgba(254, 66, 77, 0.12);
 }
 .packing-item-card.checked span {
   text-decoration: line-through;
@@ -406,11 +412,11 @@
   top: 10px;
   bottom: 10px;
   width: 2px;
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(0, 0, 0, 0.06);
 }
 .timeline-day {
   position: relative;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 .timeline-dot {
   position: absolute;
@@ -419,24 +425,22 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #fff;
-  border: 4px solid var(--brand-color);
-  box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15);
+  background-color: var(--brand-color);
+  border: 4px solid #fff;
   z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .timeline-day-header {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 .timeline-day-header h3 {
-  font-weight: 700;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  font-weight: 800;
+  font-size: 1.4rem;
   margin-bottom: 0.25rem;
+  color: #111;
 }
 .timeline-day-header h3 span.day-tag {
-  color: var(--brand-color);
+  color: inherit;
 }
 .timeline-day-header p {
   color: var(--text-muted-color);
@@ -446,12 +450,17 @@
 .timeline-day-card {
   background: var(--bg-light);
   border-radius: 1.25rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  padding: 1.75rem 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-day-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 .timeline-event {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   position: relative;
   padding-bottom: 1.5rem;
 }
@@ -459,36 +468,28 @@
   padding-bottom: 0;
 }
 .timeline-event::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 40px;
-  bottom: 0;
-  width: 1px;
-  border-left: 1px dashed rgba(0, 0, 0, 0.15);
-}
-.timeline-event:last-child::before {
   display: none;
 }
 .event-icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(254, 66, 77, 0.06);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--brand-color);
-  font-size: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  font-size: 1.1rem;
   flex-shrink: 0;
-  z-index: 1;
 }
 .event-details h4 {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  color: #333;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 .event-details p.time-meta {
   font-size: 0.8rem;
@@ -498,9 +499,9 @@
 }
 .event-details p.desc {
   margin: 0;
-  font-size: 0.9rem;
-  color: #555;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.6;
 }
 
 /* Stays and Alternatives Section Layout Headers */
@@ -648,31 +649,41 @@
 }
 .dark-mode .packing-item-card.checked {
   background: rgba(254, 66, 77, 0.08);
+  border-color: rgba(254, 66, 77, 0.2);
 }
 
 .dark-mode .pack-progress-badge {
-  background-color: #2b2b2b;
+  background-color: rgba(254, 66, 77, 0.15);
 }
 
 .dark-mode .timeline-container::before {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 .dark-mode .timeline-dot {
-  background-color: #1c1c1c;
+  background-color: var(--brand-color);
+  border-color: #121212;
+}
+.dark-mode .timeline-day-header h3 {
+  color: #f0f0f0;
 }
 .dark-mode .timeline-day-card {
   background: #252525;
   border-color: rgba(255, 255, 255, 0.03);
 }
+.dark-mode .timeline-day-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
 .dark-mode .timeline-event::before {
-  border-left-color: rgba(255, 255, 255, 0.15);
+  display: none;
 }
 .dark-mode .event-icon-box {
-  background: #1c1c1c;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(254, 66, 77, 0.1);
+}
+.dark-mode .event-details h4 {
+  color: #eee;
 }
 .dark-mode .event-details p.desc {
-  color: #ccc;
+  color: #bbb;
 }
 
 .dark-mode .alternative-card {
@@ -954,4 +965,85 @@
   color: #e0e0e0;
 }
 
+/* ==========================================
+   Travel Insights Cards (Work 7 & 8)
+   ========================================== */
+.highlight-card {
+  background: var(--bg-light);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.highlight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+.highlight-card p.desc {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+}
 
+.insight-alt-card {
+  background: var(--bg-light);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-left: 4px solid var(--brand-color);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.insight-alt-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+.insight-alt-card .alt-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.4rem;
+}
+.insight-alt-card .alt-reason {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+.insight-alt-card .alt-best-for {
+  font-size: 0.85rem;
+  color: var(--brand-color);
+  margin: 0;
+}
+.insight-alt-card .alt-best-for strong {
+  font-weight: 700;
+  color: #444;
+}
+
+/* Micro Animations */
+@keyframes fadeInUpInsights {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUpInsights 0.4s ease forwards;
+  opacity: 0;
+}
+
+/* Dark mode overrides for Insights */
+.dark-mode .highlight-card,
+.dark-mode .insight-alt-card {
+  background: #252525;
+  border-color: rgba(255, 255, 255, 0.03);
+}
+.dark-mode .highlight-card p.desc {
+  color: #ccc;
+}
+.dark-mode .insight-alt-card .alt-title {
+  color: #eee;
+}
+.dark-mode .insight-alt-card .alt-reason {
+  color: #bbb;
+}
+.dark-mode .insight-alt-card .alt-best-for strong {
+  color: #ddd;
+}
