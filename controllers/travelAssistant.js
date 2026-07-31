@@ -2,6 +2,14 @@ const axios = require("axios");
 const Listing = require("../models/listing");
 const { generateTravelPlan } = require("../services/geminiService");
 
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+
+const mapToken = process.env.MAP_TOKEN;
+
+const geocodingClient = mbxGeocoding({
+    accessToken: mapToken,
+});
+
 module.exports.renderTravelAssistant = (req, res) => {
     res.render("listings/travel-assistant");
 };
@@ -10,15 +18,40 @@ module.exports.renderTravelAssistant = (req, res) => {
 module.exports.generateTravelPlan = async (req, res) => {
     try {
         const { destination } = req.body;
-        const searchDestination = destination
-            .split(",")[0]
-            .trim();
+
+        const geoResponse = await geocodingClient
+            .forwardGeocode({
+                query: destination.trim(),
+                limit: 1,
+            })
+            .send();
+
+        if (!geoResponse.body.features.length) {
+            return res.status(404).json({
+                success: false,
+                message: "Destination not found."
+            });
+        }
+
+        const place = geoResponse.body.features[0];
+        const searchDestination = place.text;
+
+       //  console.log("Mapbox Place:", place.place_name);
+
+        const [longitude, latitude] = place.geometry.coordinates;
 
         const API_KEY = process.env.WEATHER_API_KEY;
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${destination}&units=metric&appid=${API_KEY}`;
+        const url =
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`;
 
         const response = await axios.get(url);
+
+        // console.log("Mapbox Place:");
+        // console.log(geoResponse.body.features[0].place_name);
+
+        // console.log("Coordinates:");
+        // console.log(latitude, longitude);
 
         const weatherData = {
             city: response.data.name,
@@ -78,8 +111,8 @@ module.exports.generateTravelPlan = async (req, res) => {
             });
         }
 
-        console.log("AI DATA:");
-        console.log(aiData);
+        // console.log("AI DATA:");
+        // console.log(aiData);
 
         const travelInsights = aiData.travelInsights;
         let alternativeListings = [];

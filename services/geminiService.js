@@ -125,6 +125,7 @@ Include:
 - Local travel tips
 - Transportation
 
+Even when recommending alternative destinations, still provide a complete itinerary for the user's original destination so they can make an informed decision.
 ---------------------------------------------------
 ITINERARY RULES
 ---------------------------------------------------
@@ -173,15 +174,23 @@ Analyze ALL of the following before making a recommendation:
 - Safety
 - Outdoor activity suitability
 
-Decide whether this destination should be recommended.
+Decide whether the destination is still worth visiting by balancing both positive and negative factors.
 
-If current weather or seasonal conditions are likely to significantly affect the travel experience or safety, return:
+Choose "whyVisit" if:
+- The destination remains enjoyable for most travelers.
+- Major attractions are generally accessible.
+- Weather inconveniences are manageable with proper preparation.
+- Seasonal conditions are common and do not prevent most tourist activities.
 
-"type": "alternative"
+Choose "alternative" ONLY if:
+- Severe weather is likely to cancel or significantly disrupt the majority of the trip.
+- Transportation is frequently unreliable due to weather.
+- Tourist attractions are expected to remain inaccessible.
+- Safety risks are substantially higher than normal.
+- Overall travel experience is likely to be poor despite preparation.
 
-Otherwise return:
-
-"type": "whyVisit"
+Do not recommend alternatives simply because another destination has better weather.
+Only recommend alternatives when the original destination is genuinely not advisable.
 
 Rules:
 
@@ -198,6 +207,12 @@ If type is "alternative":
 
 Think like an experienced travel planner rather than simply describing the weather.
 
+Do not overreact to seasonal weather.
+
+Many destinations have predictable seasonal weather that experienced travelers still enjoy.
+
+Recommend alternatives only when weather creates major safety concerns or makes most of the planned activities impractical.
+
 Do not make recommendations based only on tourist popularity.
 
 Consider whether a traveler would actually enjoy the trip under the given weather and seasonal conditions.
@@ -205,6 +220,32 @@ Consider whether a traveler would actually enjoy the trip under the given weathe
 If sightseeing, trekking, beach activities, or transportation are likely to be severely affected, recommend alternatives.
 
 Do not recommend unsafe travel.
+
+---------------------------------------
+ALTERNATIVE DESTINATION RULES
+---------------------------------------
+
+If recommending alternatives:
+
+1. Prefer destinations within the same state first.
+
+2. If none are suitable, choose destinations in neighboring states.
+
+3. Preserve the same travel experience:
+- Hill station → Hill station
+- Beach → Beach
+- Desert → Desert
+- Heritage → Heritage
+- Wildlife → Wildlife
+
+4. Keep travel distance practical, ideally within one day's road, rail, or short flight travel.
+
+5. Recommend destinations with similar climate, scenery, and activities.
+
+6. Avoid recommending famous destinations that are geographically far away unless there are no suitable nearby alternatives.
+
+7. Consider accessibility, transportation convenience, travel cost, and weather.
+
 ---------------------------------------------------
 IMPORTANT
 ---------------------------------------------------
