@@ -1,18 +1,30 @@
 <% layout("/layouts/boilerplate") %>
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">Login on WanderNest</h1>
-    <div class="col-6 offset-3">
-         <form action="/login" method="post" class="needs-validation" novalidate>
-              <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input name="username"  type="text" class="form-control" required id="username">
-               </div>
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <i class="fa-regular fa-compass"></i>
+        </div>
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Continue your journey with WanderNest.</p>
+        
+        <form action="/login" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <input name="username" type="text" class="form-control auth-input" placeholder="Username" required id="username">
+            </div>
 
-               <div class="mb-3">
-                    <label for="password" class="form-label">password</label>
-                    <input name="password"  type="password" class="form-control" required id="password">
-               </div>
-               <button class="btn btn-success">Login</button>
-         </form>
+            <div class="mb-4">
+                <input name="password" type="password" class="form-control auth-input" placeholder="Password" required id="password">
+            </div>
+            
+            <a href="#" class="auth-link auth-forgot">Forgot Password?</a>
+
+            <button class="auth-btn">Login</button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="/signup" class="auth-link">Create Account</a>
+        </div>
     </div>
 </div>
