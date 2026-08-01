@@ -36,8 +36,6 @@ module.exports.generateTravelPlan = async (req, res) => {
         const place = geoResponse.body.features[0];
         const searchDestination = place.text;
 
-        //  console.log("Mapbox Place:", place.place_name);
-
         const [longitude, latitude] = place.geometry.coordinates;
 
         const API_KEY = process.env.WEATHER_API_KEY;
@@ -46,12 +44,6 @@ module.exports.generateTravelPlan = async (req, res) => {
             `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`;
 
         const response = await axios.get(url);
-
-        // console.log("Mapbox Place:");
-        // console.log(geoResponse.body.features[0].place_name);
-
-        // console.log("Coordinates:");
-        // console.log(latitude, longitude);
 
         const weatherData = {
             city: response.data.name,
@@ -111,9 +103,6 @@ module.exports.generateTravelPlan = async (req, res) => {
             });
         }
 
-        // console.log("AI DATA:");
-        // console.log(aiData);
-
         const travelInsights = aiData.travelInsights;
         let alternativeListings = [];
 
@@ -141,8 +130,6 @@ module.exports.generateTravelPlan = async (req, res) => {
             }).limit(3);
         }
 
-        // console.log("Destination received:", destination);
-
         // // Find recommended WanderNest stays
         const recommendedStays = await Listing.find({
             $or: [
@@ -160,14 +147,6 @@ module.exports.generateTravelPlan = async (req, res) => {
                 }
             ]
         }).limit(3);
-
-        // console.log(recommendedStays);
-
-        // // DEBUG
-        // const allListings = await Listing.find({}, "title location country");
-
-        // console.log("All Listings:");
-        // console.log(allListings);
 
         return res.json({
             success: true,

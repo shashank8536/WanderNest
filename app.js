@@ -26,7 +26,7 @@ const user = require("./Routes/user.js");
 const wishlistRoutes = require("./routes/wishlist.js");
 const bookingRoutes = require("./routes/booking.js");
 
-Mongo_Url = "mongodb://127.0.0.1:27017/wanderlust"
+const Mongo_Url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
 .then(()=>{
@@ -50,7 +50,7 @@ app.use(express.static(path.join(__dirname,"/public")));
 
 
 const sessionOptions = {
-    secret :"mysupersecretcode",
+    secret: process.env.SECRET || "mysupersecretcode",
     resave: false,
     saveUninitialized:true,
     cookie: {
@@ -60,6 +60,10 @@ const sessionOptions = {
     }
 };
 
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1);
+    sessionOptions.cookie.secure = true;
+}
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -145,6 +149,7 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("error.ejs",{message});
    // res.status(statusCode).send(message);
 });
-app.listen(8080,()=>{
-    console.log("port 8080 is working");
-})
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

@@ -1,175 +1,167 @@
-# 🧳 WanderNest
+# WanderNest
 
-> **Project Status:** Active Development 🟢
->
-> A full-stack travel accommodation platform inspired by Airbnb.
->
-> **Last Updated:** June 2026
+A full-stack travel accommodation platform inspired by Airbnb that enables users to discover stays, manage bookings, and receive AI-powered travel recommendations. WanderNest combines secure authentication, real-time booking validation, live weather insights, and personalized travel planning into a modern travel experience.
 
----
+## Live Features
 
-# 🏡 WanderNest
-
-A full-stack accommodation discovery platform where users can explore stays, save favorites, book reservations, and interact with listings — built with modern web technologies and a scalable MVC architecture.
-
----
-
-## 🚀 Overview
-
-WanderNest is a dynamic web application inspired by real-world platforms like Airbnb, but focused on **discovery + personalization + security + extensibility**.
-
-Users can search listings by title, location, or country, toggle category filters, set custom budget price filters, book reservations with live pricing previews, and manage favorites via a personalized wishlist.
+- Secure user authentication with email verification (OTP)
+- Property listing management with image uploads
+- Advanced search and category filters
+- Wishlist management
+- Booking and reservation system
+- AI-powered Travel Assistant
+- Interactive maps with Mapbox
+- Review and rating system
+- Responsive UI with dark mode support
 
 ---
 
-## ✨ Features
+## Key Features
 
-### 🔐 Authentication & Authorization
-* Secure user authentication using Passport.js
-* Login / Signup system with session persistence
-* Route protection using custom middlewares
-* Ownership-based access control (only owners can edit/delete listings)
+### Authentication & Security
 
----
+- Secure authentication using Passport.js
+- Email verification with OTP via Nodemailer
+- Forgot Password and Reset Password
+- Session-based authentication
+- Ownership-based authorization
+- Protected routes using custom middleware
 
-### 🏘️ Listings Management
-* Create, edit, and delete listings
-* Upload images via Cloudinary
-* Structured data using MongoDB
-* MVC-based clean architecture
+### Listings Management
 
----
+- Create, edit, and delete property listings
+- Cloudinary image upload and management
+- Responsive listing pages
+- Clean MVC architecture
 
-### 🔍 Advanced Search & Filters (NEW)
-* **Keyword Search:** Search for listings matching title, location, or country.
-* **Category Filters:** Quick tags for Trending, Rooms, Castles, Amazing Pools, Domes, etc.
-* **Compact Price Filter:** Inline filter button inside the search input. It opens a sleek dropdown with a frosted glass look (`backdrop-filter: blur(10px)`) to input minimum and maximum prices.
-* **Filter Persistence:** Searching or clicking links preserves other active filter states.
+### Search & Filters
 
----
+- Search by title, location, or country
+- Category-based filters
+- Custom price range filter
+- Persistent search and filter state
 
-### 📅 Booking & Reservation System (NEW)
-* **Responsive Booking Widget:** Embedded directly beside listing details, showing a sticky panel on larger screens.
-* **Live Price Calculator:** Automatically computes nights, base rates, service fees, and invoice totals instantly when dates are selected.
-* **Access Control Checks:** Prevents listing owners from booking their own listings.
-* **Double Booking Prevention:** Validates check-in/out date ranges and runs a database overlap query before reserving.
-* **My Bookings Dashboard:** A private panel showing booking details with check-in, check-out, guests count, prices, and cancellation actions.
+### Booking System
 
----
+- Real-time booking widget
+- Dynamic price calculation
+- Booking conflict detection
+- Prevents owners from booking their own listings
+- Booking history dashboard
+- Booking confirmation and cancellation emails
 
-### 📩 Advanced Authentication & Email Verification (NEW)
-* **Email Verification (OTP):** Users receive a 6-digit OTP email upon signup to confirm their identity.
-* **Unverified Login Interceptor:** If a registered user tries to log in without verification, they are intercepted, sent a new OTP, and redirected to verify.
-* **Resend OTP Flow:** Clean interface option for users to resend OTP emails.
-* **Transporter System:** Backed by Nodemailer and Gmail's secure App Passwords.
+### AI Travel Assistant
 
----
+The AI Travel Assistant helps users plan trips before booking accommodation.
 
-### ❤️ Wishlist System
-* Users can save/unsave listings
-* Toggle functionality (add/remove)
-* Stored in user schema using references
-* Personalized wishlist page
+Features include:
 
----
+- AI-generated day-wise travel itinerary
+- Live weather information using OpenWeather API
+- Smart packing recommendations
+- Personalized travel advisory
+- Destination insights
+- Nearby alternative destination recommendations
+- Recommended WanderNest stays based on destination
+- Mapbox-powered destination geocoding
+- Premium responsive UI with smooth interactions
 
-### ⭐ Reviews System
-* Add and delete reviews on listings
-* Linked with users and listings
-* Maintains relational data integrity
+### Reviews & Wishlist
 
----
+- Add and delete reviews
+- Save and manage wishlist
+- User-specific personalized data
 
-### 🗺️ Map Integration
-* Interactive maps using Mapbox
-* Displays listing location visually using coordinates
+### Maps
 
----
-
-### 🌙 Dark Mode (Enhanced UI)
-* Toggle between light and dark themes
-* Persistent theme using localStorage
-* Smooth UI transitions
+- Interactive Mapbox integration
+- Location visualization using geographic coordinates
 
 ---
 
-## 🧠 Tech Stack
+# Tech Stack
 
-### Frontend
-* EJS (Embedded JavaScript Templates)
-* Bootstrap 5
-* CSS (Custom styling & transitions)
-* JavaScript (DOM manipulation & client-side calculators)
+## Frontend
 
-### Backend
-* Node.js
-* Express.js
+- EJS
+- Bootstrap 5
+- HTML5
+- CSS3
+- JavaScript
 
-### Database
-* MongoDB
-* Mongoose (ODM)
+## Backend
 
-### Authentication
-* Passport.js
-* passport-local-mongoose
+- Node.js
+- Express.js
 
-### External Services
-* Cloudinary (Image storage)
-* Mapbox (Maps & geolocation)
-* Nodemailer / Gmail SMTP (Email OTP service)
+## Database
+
+- MongoDB
+- Mongoose
+
+## Authentication
+
+- Passport.js
+- passport-local-mongoose
+- Express Session
+
+## APIs & Services
+
+- Gemini API
+- OpenWeather API
+- Mapbox API
+- Cloudinary
+- Nodemailer
 
 ---
 
-## 📁 Project Structure (MVC)
+# Project Structure
 
 ```
-WanderNest/
+WanderNest
 │
-├── models/        → Database schemas (listing, review, user, booking)
-├── routes/        → Express routes (listing, reviews, user, wishlist, booking)
-├── controllers/   → Business logic (listing, booking, user)
-├── views/         → EJS templates
-│   ├── bookings/  → Booking index page
-│   ├── includes/  → Navbar, footer, flash alerts
-│   ├── layouts/   → EJS boilerplates
-│   └── listings/  → Listing detail, edit, new, and search pages
-├── public/        → Static assets (CSS, JS)
-├── utils/         → Utility functions (ExpressError, WrapAsync)
-├── middleware.js  → Custom middleware
-├── app.js         → Entry point
+├── controllers/
+├── middleware/
+├── models/
+├── public/
+│   ├── css/
+│   ├── js/
+│
+├── routes/
+├── utils/
+├── views/
+│   ├── bookings/
+│   ├── includes/
+│   ├── layouts/
+│   └── listings/
+│
+├── app.js
+└── package.json
 ```
 
 ---
 
-## 🔥 Key Highlights
+# Installation
 
-* Clean MVC architecture
-* Real-world integrations (Cloudinary, Mapbox)
-* Secure authentication system
-* Preventative security (Overbooking checks, ownership restrictions, auth safeguards)
-* Dynamic UI with dark mode and live reservation calculators
-
----
-
-## 🛠️ Future Improvements
-
-* 💳 Payment gateway integration (Stripe/Razorpay)
-* 📩 Email alerts for reservations and cancellations
-* 🤖 AI-powered support assistant
-
----
-
-## ⚙️ Installation & Setup
+Clone the repository
 
 ```bash
 git clone https://github.com/your-username/WanderNest.git
+```
+
+Move into the project
+
+```bash
 cd WanderNest
+```
+
+Install dependencies
+
+```bash
 npm install
 ```
 
----
-
-### ▶️ Run the App
+Start the application
 
 ```bash
 npm start
@@ -177,34 +169,47 @@ npm start
 
 ---
 
-### 🔐 Environment Variables (.env)
+# Environment Variables
 
-Create a `.env` file and add:
+Create a `.env` file and configure:
 
-```
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_KEY=your_key
-CLOUDINARY_SECRET=your_secret
+```env
+MONGO_URL=your_mongodb_connection_string
+
+SECRET=your_session_secret
 
 MAP_TOKEN=your_mapbox_token
 
-DB_URL=mongodb://127.0.0.1:27017/wanderlust
-SESSION_SECRET=your_secret
+WEATHER_API_KEY=your_openweather_api_key
 
-EMAIL_USER=your_gmail_address
-EMAIL_PASS=your_gmail_app_password
+GEMINI_API_KEY=your_gemini_api_key
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_KEY=your_cloudinary_key
+CLOUDINARY_SECRET=your_cloudinary_secret
+
+EMAIL_USER=your_email
+EMAIL_PASS=your_app_password
 ```
 
 ---
 
-## 📣 Author
+# Future Improvements
 
-**Shashank Shekhar**  
+- Payment gateway integration (Stripe/Razorpay)
+- AI-powered travel route planner
+- Google OAuth authentication
+- Multi-language support
+- Booking analytics dashboard
+
+---
+
+# Author
+
+**Shashank Shekhar**
+
 B.Tech Student | Full Stack Developer
 
 ---
 
-## ⭐ If you like this project
-
-Give it a ⭐ on GitHub and share feedback!
-
+If you found this project useful, consider giving it a ⭐ on GitHub.

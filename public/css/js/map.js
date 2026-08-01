@@ -13,9 +13,6 @@
 // //     .setHTML(`<h4>${listing.location}</h4><p>Exact Location will be provided after booking!</p>`))
 // //  .addTo(map);
 // // Guard clause – VERY IMPORTANT
-// console.log(coordinates);
-
-console.log(listing.geometry.coordinates);
 
 mapboxgl.accessToken = mapToken;
 

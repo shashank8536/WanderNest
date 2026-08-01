@@ -271,6 +271,23 @@ This document tracks all features, changes, and architectural decisions made dur
     *   *Change:* For `alternative`, replaced the `.alert-warning` fallback block with `.insight-alt-card` blocks. Added rendering for the previously unused `bestFor` property natively provided by the backend API schema.
     *   *Change:* Injected inline `animation-delay` attributes during mapping to execute staggered fade-in animations on load.
 
-*   **[public/css/aiTravel.css](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/public/css/aiTravel.css)**
-    *   *Change:* Defined `.highlight-card` and `.insight-alt-card` with clean borders, padded interiors, and sophisticated hover lifts. 
-    *   *Change:* Added `@keyframes fadeInUpInsights` and `.fade-in-up` class to handle the smooth 0.4s staggered entrance of the insight cards. Integrated dark mode overrides perfectly preserving text contrast.
+*   *Change:* Defined `.highlight-card` and `.insight-alt-card` with clean borders, padded interiors, and sophisticated hover lifts. 
+*   *Change:* Added `@keyframes fadeInUpInsights` and `.fade-in-up` class to handle the smooth 0.4s staggered entrance of the insight cards. Integrated dark mode overrides perfectly preserving text contrast.
+
+---
+
+## 7. Deployment Readiness Checks & Hardening
+
+*   **[app.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/app.js)**
+    *   *Change:* Updated the server port configuration to `const PORT = process.env.PORT || 8080; app.listen(PORT, ...)` ensuring it binds correctly to cloud platforms (like Render).
+    *   *Change:* Added a production environment check (`if (process.env.NODE_ENV === "production")`) to enable `app.set("trust proxy", 1)` and `sessionOptions.cookie.secure = true`, which are mandatory for secure sessions when deployed behind a proxy.
+    *   *Change:* Refactored MongoDB URI to pull dynamically via `const Mongo_Url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";`.
+    *   *Change:* Refactored session secret to pull via `secret: process.env.SECRET || "mysupersecretcode"`.
+    *   *Verified:* The catch-all `app.all("*")` error handler correctly passes an `ExpressError(404, 'Page not Found!')` which is intercepted by the global error handler middleware, successfully rendering the custom `error.ejs` template.
+
+*   **[package.json](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/package.json)**
+    *   *Verified:* `"start": "node app.js"` script is properly configured for the deployment runtime.
+
+*   **[Routes/user.js](file:///c:/Users/Shashank Shekhar/Desktop/projects/WanderNest/Routes/user.js)** (Authentication Audit)
+    *   *Verified:* Signup (`/signup`), OTP Verification (`/verify-otp`, `/resend-otp`), Login (`/login`), and Logout (`/logout`) routes are fully configured and functional.
+    *   *Audit Note:* **Forgot Password** and **Reset Password** functionality is currently *not* implemented natively in the codebase. There are no default fallback routes for this in `passport-local-mongoose`. These features would need to be built explicitly (generating a reset token, storing its expiration, mailing the link, and rendering a reset form) in a future iteration.

@@ -18,7 +18,6 @@ module.exports.signup = async (req, res, next) => {
             otpExpiry: Date.now() + 10 * 60 * 1000 // 10 mins
         });
         const registeredUser = await User.register(newUser, password);
-        console.log(registeredUser);
         
         await sendOTPEmail(email, username, otp);
         
@@ -52,16 +51,6 @@ module.exports.verifyOtp = async (req, res, next) => {
             req.flash("error", "User not found.");
             return res.redirect("/signup");
         }
-        
-        console.log("verifyOtp details:", {
-            email,
-            enteredOtp: otp,
-            storedOtp: user.otp,
-            otpMatches: user.otp === otp,
-            storedExpiry: user.otpExpiry,
-            currentTime: new Date(),
-            isNotExpired: user.otpExpiry > Date.now()
-        });
         
         if (user.otp === otp && user.otpExpiry > Date.now()) {
             user.isVerified = true;
