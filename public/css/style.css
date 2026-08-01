@@ -343,3 +343,315 @@ show page fonting */
 .dark-mode .auth-divider::after {
   border-bottom-color: #444;
 }
+
+/* =========================================================================
+   PREMIUM ADD NEW LISTING FORM STYLES
+   ========================================================================= */
+
+.listing-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+    min-height: calc(100vh - 13rem);
+}
+
+.premium-form-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 22px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    padding: 3rem 4rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.form-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #222222;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    font-size: 1.1rem;
+    color: #6a6a6a;
+    font-weight: 400;
+}
+
+.premium-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333333;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+}
+
+.premium-input,
+.premium-textarea,
+.premium-select {
+    width: 100%;
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    font-size: 1rem;
+    color: #333333;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.premium-textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.premium-input:focus,
+.premium-textarea:focus,
+.premium-select:focus {
+    background-color: #ffffff;
+    border-color: #fe424d;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15);
+    outline: none;
+}
+
+.premium-input::placeholder,
+.premium-textarea::placeholder {
+    color: #aaaaaa;
+}
+
+/* Custom Select styling to match inputs perfectly */
+.premium-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    background-size: 16px 12px;
+    padding-right: 3rem;
+}
+
+/* Input Group for Price */
+.premium-input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    display: flex;
+    transition: all 0.3s ease;
+}
+
+.premium-input-group:focus-within {
+    background-color: #ffffff;
+    border-color: #fe424d;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15);
+}
+
+.premium-input-group .premium-addon {
+    background-color: transparent;
+    border: none;
+    padding: 0.9rem 0 0.9rem 1.2rem;
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.premium-input-group .premium-input {
+    border: none;
+    background-color: transparent;
+    box-shadow: none !important;
+}
+
+/* Premium Upload Area */
+.premium-upload-area {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    border: 2px dashed #d1d1d1;
+    border-radius: 16px;
+    background-color: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.premium-upload-area:hover {
+    border-color: #fe424d;
+    background-color: #fff9f9;
+}
+
+.premium-upload-area .upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+    padding: 2rem;
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+    color: #fe424d;
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    font-weight: 600;
+    color: #333333;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.upload-hint {
+    font-size: 0.9rem;
+    color: #888888;
+}
+
+.premium-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* Button */
+.premium-btn {
+    background-color: #fe424d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(254, 66, 77, 0.25);
+    margin-top: 1rem;
+}
+
+.premium-btn:hover {
+    background-color: #e33842;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.35);
+}
+
+.premium-btn:active {
+    transform: translateY(0);
+}
+
+/* =========================================================================
+   DARK MODE FOR PREMIUM FORM
+   ========================================================================= */
+.dark-mode .premium-form-card {
+    background: #1e1e1e;
+    border-color: #2c2c2c;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .form-title,
+.dark-mode .premium-label,
+.dark-mode .upload-text {
+    color: #ffffff;
+}
+
+.dark-mode .form-subtitle {
+    color: #aaaaaa;
+}
+
+.dark-mode .premium-input,
+.dark-mode .premium-textarea,
+.dark-mode .premium-select,
+.dark-mode .premium-input-group {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.dark-mode .premium-input:focus,
+.dark-mode .premium-textarea:focus,
+.dark-mode .premium-select:focus,
+.dark-mode .premium-input-group:focus-within {
+    background-color: #333333;
+    border-color: #fe424d;
+}
+
+.dark-mode .premium-addon {
+    color: #dddddd;
+}
+
+.dark-mode .premium-upload-area {
+    background-color: #2a2a2a;
+    border-color: #444444;
+}
+
+.dark-mode .premium-upload-area:hover {
+    border-color: #fe424d;
+    background-color: #333333;
+}
+
+.dark-mode .upload-hint {
+    color: #888888;
+}
+
+.dark-mode .premium-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffffff' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
+/* =========================================================================
+   RESPONSIVE LAYOUT FOR PREMIUM FORM
+   ========================================================================= */
+@media (max-width: 768px) {
+    .listing-form-wrapper {
+        padding: 2rem 1rem;
+    }
+    
+    .premium-form-card {
+        padding: 2rem;
+        border-radius: 18px;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+    }
+
+    /* Stack Row on mobile */
+    .custom-row-spacing .col-md-6 {
+        width: 100%;
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .premium-form-card {
+        padding: 1.5rem;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+}

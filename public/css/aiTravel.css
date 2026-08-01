@@ -89,6 +89,11 @@
   box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
   outline: none;
 }
+.form-control-custom option {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
 
 /* Travel Type Pills */
 .pill-container {
