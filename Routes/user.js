@@ -25,6 +25,14 @@ router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedir
 // for logout
 router.get("/logout",userController.logout);
 
+// Forgot Password Routes
+router.get("/forgot-password", userController.renderForgotPassword);
+router.post("/forgot-password", WrapAsync(userController.forgotPassword));
 
+router.get("/verify-reset-otp", userController.renderVerifyResetOtp);
+router.post("/verify-reset-otp", WrapAsync(userController.verifyResetOtp));
+
+router.get("/reset-password", userController.renderResetPassword);
+router.post("/reset-password", WrapAsync(userController.resetPassword));
 
 module.exports = router;

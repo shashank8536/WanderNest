@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const { generateOTP } = require("../utils/otpGenerator");
-const { sendOTPEmail } = require("../utils/mailer");
+const { sendOTPEmail, sendResetOTPEmail } = require("../utils/mailer");
 
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs");
@@ -143,4 +143,116 @@ module.exports.logout = (req, res, next) => {
     })
 };
 
+// FORGOT PASSWORD FLOW
+module.exports.renderForgotPassword = (req, res) => {
+    res.render("users/forgotPassword.ejs");
+};
 
+module.exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            req.flash("error", "Email not registered.");
+            return res.redirect("/forgot-password");
+        }
+
+        const otp = generateOTP();
+        user.resetOtp = otp;
+        user.resetOtpExpiry = Date.now() + 10 * 60 * 1000; // 10 mins
+        await user.save();
+
+        await sendResetOTPEmail(email, user.username, otp);
+        
+        req.session.resetEmail = email;
+        req.flash("success", "OTP sent successfully.");
+        res.redirect("/verify-reset-otp");
+    } catch (e) {
+        req.flash("error", e.message);
+        res.redirect("/forgot-password");
+    }
+};
+
+module.exports.renderVerifyResetOtp = (req, res) => {
+    if (!req.session.resetEmail) {
+        req.flash("error", "Session expired. Please request a new OTP.");
+        return res.redirect("/forgot-password");
+    }
+    res.render("users/verifyResetOtp.ejs");
+};
+
+module.exports.verifyResetOtp = async (req, res) => {
+    try {
+        const { otp } = req.body;
+        const email = req.session.resetEmail;
+        
+        if (!email) {
+            req.flash("error", "Session expired. Please request a new OTP.");
+            return res.redirect("/forgot-password");
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            req.flash("error", "User not found.");
+            return res.redirect("/forgot-password");
+        }
+
+        if (user.resetOtp === otp && user.resetOtpExpiry > Date.now()) {
+            req.session.allowPasswordReset = true;
+            req.flash("success", "OTP verified. Please enter your new password.");
+            res.redirect("/reset-password");
+        } else {
+            req.flash("error", "Invalid OTP or OTP expired.");
+            res.redirect("/verify-reset-otp");
+        }
+    } catch (e) {
+        req.flash("error", e.message);
+        res.redirect("/verify-reset-otp");
+    }
+};
+
+module.exports.renderResetPassword = (req, res) => {
+    if (!req.session.allowPasswordReset) {
+        req.flash("error", "Please verify OTP first.");
+        return res.redirect("/forgot-password");
+    }
+    res.render("users/resetPassword.ejs");
+};
+
+module.exports.resetPassword = async (req, res) => {
+    try {
+        if (!req.session.allowPasswordReset) {
+            req.flash("error", "Please verify OTP first.");
+            return res.redirect("/forgot-password");
+        }
+
+        const { password, confirmPassword } = req.body;
+        const email = req.session.resetEmail;
+
+        if (password !== confirmPassword) {
+            req.flash("error", "Passwords do not match.");
+            return res.redirect("/reset-password");
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            req.flash("error", "User not found.");
+            return res.redirect("/forgot-password");
+        }
+
+        await user.setPassword(password);
+        user.resetOtp = undefined;
+        user.resetOtpExpiry = undefined;
+        await user.save();
+
+        delete req.session.resetEmail;
+        delete req.session.allowPasswordReset;
+
+        req.flash("success", "Password updated successfully. Please log in.");
+        res.redirect("/login");
+    } catch (e) {
+        req.flash("error", e.message);
+        res.redirect("/reset-password");
+    }
+};

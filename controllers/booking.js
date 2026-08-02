@@ -1,5 +1,6 @@
 const Booking = require("../models/booking");
 const Listing = require("../models/listing");
+const { sendBookingConfirmationEmail } = require("../utils/mailer");
 
 module.exports.createBooking = async (req, res) => {
     let { id } = req.params;
@@ -82,6 +83,14 @@ module.exports.createBooking = async (req, res) => {
     });
 
     await newBooking.save();
+
+    try {
+        newBooking.listing = listing; // Populate listing manually to avoid extra DB query
+        await sendBookingConfirmationEmail(req.user.email, req.user.username, newBooking);
+    } catch (err) {
+        console.error("Error sending booking confirmation email:", err);
+    }
+
     req.flash("success", "Reservation successful!");
     res.redirect("/bookings");
 };
