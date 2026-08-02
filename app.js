@@ -1,7 +1,7 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
     require('dotenv').config();
 }
-const express= require("express");
+const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
@@ -9,7 +9,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
-const flash = require("connect-flash"); 
+const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
@@ -26,37 +26,36 @@ const user = require("./Routes/user.js");
 const wishlistRoutes = require("./routes/wishlist.js");
 const bookingRoutes = require("./routes/booking.js");
 
-const Mongo_Url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
-
+const Mongo_Url = process.env.MONGO_URL;
 main()
-.then(()=>{
-    console.log("connected to database");
-})
-.catch((err)=>{
-    console.log(err);
-});
+    .then(() => {
+        console.log("connected to database");
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
-async function main(){
+async function main() {
     await mongoose.connect(Mongo_Url);
 }
 
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine('ejs',ejsMate);
-app.use(express.static(path.join(__dirname,"/public")));
+app.engine('ejs', ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
 
 const sessionOptions = {
     secret: process.env.SECRET || "mysupersecretcode",
     resave: false,
-    saveUninitialized:true,
+    saveUninitialized: true,
     cookie: {
-        expires: Date.now()+ 7*24*60*60*1000,
-        maxAge: 7*24*60*60*1000,
-        httpOnly:true,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
     }
 };
 
@@ -80,28 +79,28 @@ passport.deserializeUser(User.deserializeUser());
 
 
 // using flash by middleware
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.locals.success = req.flash("success");
-     res.locals.error = req.flash("error");
+    res.locals.error = req.flash("error");
     // for show login signup if case
-    res.locals.currUser=req.user;
+    res.locals.currUser = req.user;
     next();
 })
 
 
 // for assistant
-app.use("/",travelAssistant);
+app.use("/", travelAssistant);
 
 ////  for listing
-app.use("/listings",listings);
+app.use("/listings", listings);
 // for reviews
-app.use("/listings/:id/review",review);
+app.use("/listings/:id/review", review);
 // we use merge params to send id to revew.js for post a review from app.js
 //for user
-app.use("/",user);
+app.use("/", user);
 
 // for wishlist listing
-app.use("/wishlist",wishlistRoutes);
+app.use("/wishlist", wishlistRoutes);
 
 // for travel assistant page
 app.get("/travel-assistant", (req, res) => {
@@ -137,17 +136,17 @@ app.use("/bookings", bookingRoutes);
 //agar kisi se match nhii hua to yha pe aake match hoga
 // Catch-all 404 handler — Express 5 syntax
 app.all("*", (req, res, next) => {
-  next(new ExpressError(404, 'Page not Found!'));
+    next(new ExpressError(404, 'Page not Found!'));
 });
 
 // for ai assistant rooute
 
- //custom error handling
-app.use((err,req,res,next)=>{
+//custom error handling
+app.use((err, req, res, next) => {
     // send expresserror
-    let{statusCode=500, message="Something went wrong"}=err;
-    res.status(statusCode).render("error.ejs",{message});
-   // res.status(statusCode).send(message);
+    let { statusCode = 500, message = "Something went wrong" } = err;
+    res.status(statusCode).render("error.ejs", { message });
+    // res.status(statusCode).send(message);
 });
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
