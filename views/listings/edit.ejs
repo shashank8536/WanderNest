@@ -33,14 +33,19 @@
         </div>
 
         <div class="row">
-            <div class="mb-3 col-md-4" >
-                <label for="price" class="form-label">price</label>
-                <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control"required>
+            <div class="mb-3 col-md-4">
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required>
             </div>
 
-            <div class="mb-3 col-md-8">
+            <div class="mb-3 col-md-4">
                 <label for="Country" class="form-label">Country</label>
                 <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required>
+            </div>
+
+            <div class="mb-3 col-md-4">
+                <label for="maxGuests" class="form-label">Maximum Guests</label>
+                <input name="listing[maxGuests]" value="<%= listing.maxGuests || 4 %>" type="number" min="1" class="form-control" required>
             </div>
         </div>
         

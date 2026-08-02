@@ -27,6 +27,7 @@
                     <p class="card-text"><i class="fa-solid fa-location-dot"></i> &nbsp;<%= listing.location %>, <%=
                                 listing.country %>
                     </p>
+                    <p class="card-text text-muted mt-2"><i class="fa-solid fa-users"></i> &nbsp;Max <%= listing.maxGuests || 4 %> Guests</p>
                 </div>
             </div>
 
@@ -71,7 +72,7 @@
                             <label class="form-label text-uppercase fw-bold text-muted"
                                 style="font-size: 0.7rem; letter-spacing: 0.5px;">Guests</label>
                             <input type="number" name="booking[guests]" id="guests"
-                                class="form-control border-0 p-0 shadow-none" required min="1" max="16" value="1">
+                                class="form-control border-0 p-0 shadow-none" required min="1" max="<%= listing.maxGuests || 4 %>" value="1">
                         </div>
                     </div>
 

@@ -20,6 +20,11 @@ const listingSchema = new Schema({
   },
   location: String,
   country: String,
+  maxGuests: {
+    type: Number,
+    default: 4,
+    min: [1, "Guests must be at least 1"]
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,

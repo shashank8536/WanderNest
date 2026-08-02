@@ -43,6 +43,12 @@ module.exports.createBooking = async (req, res) => {
         return res.redirect(`/listings/${id}`);
     }
 
+    const maxGuests = listing.maxGuests || 4;
+    if (Number(guests) > maxGuests) {
+        req.flash("error", `This property accommodates a maximum of ${maxGuests} guests.`);
+        return res.redirect(`/listings/${id}`);
+    }
+
     // 3. Security Check: Overbooking protection (Overlap checks)
     const overlappingBooking = await Booking.findOne({
         listing: id,
