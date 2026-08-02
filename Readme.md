@@ -1,28 +1,14 @@
 # WanderNest
 
-A full-stack travel accommodation platform inspired by Airbnb that enables users to discover stays, manage bookings, and receive AI-powered travel recommendations. WanderNest combines secure authentication, real-time booking validation, live weather insights, and personalized travel planning into a modern travel experience.
+WanderNest is a full-stack travel accommodation platform inspired by Airbnb. It enables users to discover stays, book accommodations, manage reservations, and receive AI-powered travel recommendations. The platform combines secure authentication, real-time booking validation, live weather insights, and personalized travel planning into a modern travel experience.
 
-## Live Features
-
-- Secure user authentication with email verification (OTP)
-- Property listing management with image uploads
-- Advanced search and category filters
-- Wishlist management
-- Booking and reservation system
-- AI-powered Travel Assistant
-- Interactive maps with Mapbox
-- Review and rating system
-- Responsive UI with dark mode support
-
----
-
-## Key Features
+## Features
 
 ### Authentication & Security
 
 - Secure authentication using Passport.js
 - Email verification with OTP via Nodemailer
-- Forgot Password and Reset Password
+- Forgot Password and Reset Password functionality
 - Session-based authentication
 - Ownership-based authorization
 - Protected routes using custom middleware
@@ -32,13 +18,13 @@ A full-stack travel accommodation platform inspired by Airbnb that enables users
 - Create, edit, and delete property listings
 - Cloudinary image upload and management
 - Responsive listing pages
-- Clean MVC architecture
+- MVC architecture
 
 ### Search & Filters
 
 - Search by title, location, or country
-- Category-based filters
-- Custom price range filter
+- Category-based filtering
+- Price range filter
 - Persistent search and filter state
 
 ### Booking System
@@ -46,15 +32,11 @@ A full-stack travel accommodation platform inspired by Airbnb that enables users
 - Real-time booking widget
 - Dynamic price calculation
 - Booking conflict detection
-- Prevents owners from booking their own listings
+- Prevent owners from booking their own listings
 - Booking history dashboard
 - Booking confirmation and cancellation emails
 
 ### AI Travel Assistant
-
-The AI Travel Assistant helps users plan trips before booking accommodation.
-
-Features include:
 
 - AI-generated day-wise travel itinerary
 - Live weather information using OpenWeather API
@@ -62,20 +44,20 @@ Features include:
 - Personalized travel advisory
 - Destination insights
 - Nearby alternative destination recommendations
-- Recommended WanderNest stays based on destination
+- Recommended WanderNest stays
 - Mapbox-powered destination geocoding
-- Premium responsive UI with smooth interactions
+- Responsive UI with interactive travel planner
 
 ### Reviews & Wishlist
 
 - Add and delete reviews
-- Save and manage wishlist
-- User-specific personalized data
+- Wishlist management
+- Personalized user experience
 
 ### Maps
 
 - Interactive Mapbox integration
-- Location visualization using geographic coordinates
+- Geographic location visualization
 
 ---
 
@@ -84,9 +66,9 @@ Features include:
 ## Frontend
 
 - EJS
-- Bootstrap 5
 - HTML5
 - CSS3
+- Bootstrap 5
 - JavaScript
 
 ## Backend
@@ -102,7 +84,7 @@ Features include:
 ## Authentication
 
 - Passport.js
-- passport-local-mongoose
+- Passport Local Mongoose
 - Express Session
 
 ## APIs & Services
@@ -117,7 +99,7 @@ Features include:
 
 # Project Structure
 
-```
+```text
 WanderNest
 │
 ├── controllers/
@@ -133,10 +115,12 @@ WanderNest
 │   ├── bookings/
 │   ├── includes/
 │   ├── layouts/
-│   └── listings/
+│   ├── listings/
+│   └── users/
 │
 ├── app.js
-└── package.json
+├── package.json
+└── README.md
 ```
 
 ---
@@ -149,7 +133,7 @@ Clone the repository
 git clone https://github.com/your-username/WanderNest.git
 ```
 
-Move into the project
+Navigate to the project directory
 
 ```bash
 cd WanderNest
@@ -161,7 +145,7 @@ Install dependencies
 npm install
 ```
 
-Start the application
+Start the development server
 
 ```bash
 npm start
@@ -171,7 +155,7 @@ npm start
 
 # Environment Variables
 
-Create a `.env` file and configure:
+Create a `.env` file in the root directory and configure the following variables:
 
 ```env
 MONGO_URL=your_mongodb_connection_string
@@ -184,23 +168,25 @@ WEATHER_API_KEY=your_openweather_api_key
 
 GEMINI_API_KEY=your_gemini_api_key
 
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_KEY=your_cloudinary_key
-CLOUDINARY_SECRET=your_cloudinary_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_KEY=your_cloudinary_api_key
+CLOUDINARY_SECRET=your_cloudinary_api_secret
 
-EMAIL_USER=your_email
-EMAIL_PASS=your_app_password
+EMAIL_USER=your_email_address
+EMAIL_PASS=your_email_app_password
 ```
 
 ---
 
-# Future Improvements
+# Future Enhancements
 
 - Payment gateway integration (Stripe/Razorpay)
-- AI-powered travel route planner
 - Google OAuth authentication
+- AI-powered travel route planner
 - Multi-language support
 - Booking analytics dashboard
+- Admin dashboard
+- User notifications
 
 ---
 
@@ -212,4 +198,4 @@ B.Tech Student | Full Stack Developer
 
 ---
 
-If you found this project useful, consider giving it a ⭐ on GitHub.
+If you found this project useful, consider giving it a star on GitHub.
