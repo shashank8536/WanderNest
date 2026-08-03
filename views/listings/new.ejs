@@ -1,127 +1,135 @@
-<% layout("/layouts/boilerplate") %>
+<% layout("/layouts/Boilerplate") %>
 
-<div class="listing-form-wrapper">
-    <div class="premium-form-card">
-        <div class="form-header">
-            <h1 class="form-title">Create a New Listing</h1>
-            <p class="form-subtitle">Share your property with travelers around the world.</p>
+    <div class="listing-form-wrapper">
+        <div class="premium-form-card">
+            <div class="form-header">
+                <h1 class="form-title">Create a New Listing</h1>
+                <p class="form-subtitle">Share your property with travelers around the world.</p>
+            </div>
+
+            <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <div class="form-group mb-4">
+                    <label for="title" class="premium-label">Title</label>
+                    <input name="listing[title]" id="title" placeholder="e.g. Mountain View Cottage" type="text"
+                        class="premium-input form-control" required>
+                    <div class="valid-feedback">Title looks good!</div>
+                    <div class="invalid-feedback">Please enter a title.</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="description" class="premium-label">Description</label>
+                    <textarea name="listing[description]" id="description"
+                        placeholder="Describe what makes your stay special..." class="premium-textarea form-control"
+                        required></textarea>
+                    <div class="invalid-feedback">Please write a short description.</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="image" class="premium-label">Upload Property Image</label>
+                    <div class="premium-upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                            <span class="upload-text">Choose Image</span>
+                            <span class="upload-hint">Upload Property Image</span>
+                        </div>
+                        <input name="listing[image]" id="image" type="file" class="premium-file-input form-control"
+                            required onchange="previewImage(event)">
+                    </div>
+                    <div class="invalid-feedback">Please upload an image.</div>
+                </div>
+
+                <div class="row custom-row-spacing">
+                    <div class="col-md-6 mb-4">
+                        <label for="price" class="premium-label">Price per night</label>
+                        <div class="input-group premium-input-group">
+                            <span class="input-group-text premium-addon">₹</span>
+                            <input name="listing[price]" id="price" placeholder="1200" type="number"
+                                class="premium-input form-control" required>
+                            <div class="invalid-feedback">Please enter a valid price.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label for="country" class="premium-label">Country</label>
+                        <input name="listing[country]" id="country" placeholder="e.g. India" type="text"
+                            class="premium-input form-control" required>
+                        <div class="invalid-feedback">Country is required.</div>
+                    </div>
+                </div>
+
+                <div class="row custom-row-spacing">
+                    <div class="col-md-4 mb-4">
+                        <label for="category" class="premium-label">Category</label>
+                        <div class="premium-select-wrapper">
+                            <select name="listing[category]" id="category" class="premium-select form-select" required>
+                                <option value="" disabled selected>Select a category...</option>
+                                <option value="Trending">Trending</option>
+                                <option value="Rooms">Rooms</option>
+                                <option value="CityWonders">CityWonders</option>
+                                <option value="Mountain">Mountain</option>
+                                <option value="Castles">Castles</option>
+                                <option value="AmazingPool">AmazingPool</option>
+                                <option value="Camping">Camping</option>
+                                <option value="Farm">Farm</option>
+                                <option value="Arctic">Arctic</option>
+                                <option value="Domes">Domes</option>
+                                <option value="Boats">Boats</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="location" class="premium-label">Location</label>
+                        <input name="listing[location]" id="location" placeholder="e.g. Mussoorie" type="text"
+                            class="premium-input form-control" required>
+                        <div class="invalid-feedback">Location is required.</div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="maxGuests" class="premium-label">Maximum Guests</label>
+                        <input name="listing[maxGuests]" id="maxGuests" placeholder="Example: 4" type="number" min="1"
+                            value="4" class="premium-input form-control" required>
+                        <div class="invalid-feedback">Please enter a valid number of guests.</div>
+                    </div>
+                </div>
+
+                <button class="premium-btn w-100">
+                    Publish Listing
+                </button>
+            </form>
         </div>
-
-        <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
-            
-            <div class="form-group mb-4">
-                <label for="title" class="premium-label">Title</label>
-                <input name="listing[title]" id="title" placeholder="e.g. Mountain View Cottage" type="text" class="premium-input form-control" required>
-                <div class="valid-feedback">Title looks good!</div>
-                <div class="invalid-feedback">Please enter a title.</div>
-            </div>
-
-            <div class="form-group mb-4">
-                <label for="description" class="premium-label">Description</label>
-                <textarea name="listing[description]" id="description" placeholder="Describe what makes your stay special..." class="premium-textarea form-control" required></textarea>
-                <div class="invalid-feedback">Please write a short description.</div>
-            </div>
-
-            <div class="form-group mb-4">
-                <label for="image" class="premium-label">Upload Property Image</label>
-                <div class="premium-upload-area" id="upload-area">
-                    <div class="upload-content">
-                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-                        <span class="upload-text">Choose Image</span>
-                        <span class="upload-hint">Upload Property Image</span>
-                    </div>
-                    <input name="listing[image]" id="image" type="file" class="premium-file-input form-control" required onchange="previewImage(event)">
-                </div>
-                <div class="invalid-feedback">Please upload an image.</div>
-            </div>
-
-            <div class="row custom-row-spacing">
-                <div class="col-md-6 mb-4">
-                    <label for="price" class="premium-label">Price per night</label>
-                    <div class="input-group premium-input-group">
-                        <span class="input-group-text premium-addon">₹</span>
-                        <input name="listing[price]" id="price" placeholder="1200" type="number" class="premium-input form-control" required>
-                        <div class="invalid-feedback">Please enter a valid price.</div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <label for="country" class="premium-label">Country</label>
-                    <input name="listing[country]" id="country" placeholder="e.g. India" type="text" class="premium-input form-control" required>
-                    <div class="invalid-feedback">Country is required.</div>
-                </div>
-            </div>
-
-            <div class="row custom-row-spacing">
-                <div class="col-md-4 mb-4">
-                    <label for="category" class="premium-label">Category</label>
-                    <div class="premium-select-wrapper">
-                        <select name="listing[category]" id="category" class="premium-select form-select" required>
-                            <option value="" disabled selected>Select a category...</option>
-                            <option value="Trending">Trending</option>
-                            <option value="Rooms">Rooms</option>
-                            <option value="CityWonders">CityWonders</option>
-                            <option value="Mountain">Mountain</option>
-                            <option value="Castles">Castles</option>
-                            <option value="AmazingPool">AmazingPool</option>
-                            <option value="Camping">Camping</option>
-                            <option value="Farm">Farm</option>
-                            <option value="Arctic">Arctic</option>
-                            <option value="Domes">Domes</option>
-                            <option value="Boats">Boats</option>
-                        </select>
-                    </div>
-                </div>
-               
-                <div class="col-md-4 mb-4">
-                    <label for="location" class="premium-label">Location</label>
-                    <input name="listing[location]" id="location" placeholder="e.g. Mussoorie" type="text" class="premium-input form-control" required>
-                    <div class="invalid-feedback">Location is required.</div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <label for="maxGuests" class="premium-label">Maximum Guests</label>
-                    <input name="listing[maxGuests]" id="maxGuests" placeholder="Example: 4" type="number" min="1" value="4" class="premium-input form-control" required>
-                    <div class="invalid-feedback">Please enter a valid number of guests.</div>
-                </div>
-            </div>
-            
-            <button class="premium-btn w-100">
-                Publish Listing
-            </button>
-        </form>
     </div>
-</div>
 
-<script>
-    function previewImage(event) {
-        const input = event.target;
-        const uploadArea = document.getElementById('upload-area');
-        
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                // If there's an existing preview, remove it
-                const existingPreview = uploadArea.querySelector('.image-preview');
-                if (existingPreview) {
-                    existingPreview.remove();
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const uploadArea = document.getElementById('upload-area');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // If there's an existing preview, remove it
+                    const existingPreview = uploadArea.querySelector('.image-preview');
+                    if (existingPreview) {
+                        existingPreview.remove();
+                    }
+
+                    // Hide default content
+                    const content = uploadArea.querySelector('.upload-content');
+                    if (content) content.style.display = 'none';
+
+                    // Create preview element
+                    const img = document.createElement('div');
+                    img.className = 'image-preview';
+                    img.style.backgroundImage = `url(${e.target.result})`;
+                    uploadArea.appendChild(img);
+
+                    uploadArea.classList.add('has-file');
                 }
-                
-                // Hide default content
-                const content = uploadArea.querySelector('.upload-content');
-                if (content) content.style.display = 'none';
-                
-                // Create preview element
-                const img = document.createElement('div');
-                img.className = 'image-preview';
-                img.style.backgroundImage = `url(${e.target.result})`;
-                uploadArea.appendChild(img);
-                
-                uploadArea.classList.add('has-file');
+
+                reader.readAsDataURL(input.files[0]);
             }
-            
-            reader.readAsDataURL(input.files[0]);
         }
-    }
-</script>
+    </script>
