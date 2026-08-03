@@ -18,10 +18,9 @@ const travelAssistant = require("./routes/travelAssistant.js");
 
 // const path = require("path");
 
-
-const listings = require("./Routes/listing.js")
-const review = require("./Routes/reviews.js")
-const user = require("./Routes/user.js");
+const listings = require("./routes/listing.js");
+const review = require("./routes/reviews.js");
+const user = require("./routes/user.js");
 
 const wishlistRoutes = require("./routes/wishlist.js");
 const bookingRoutes = require("./routes/booking.js");
