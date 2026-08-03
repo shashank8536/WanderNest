@@ -110,6 +110,10 @@ app.get("/travel-assistant", (req, res) => {
 app.use("/listings/:id/bookings", bookingRoutes);
 app.use("/bookings", bookingRoutes);
 
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 
 
 // app.get("/",(req,res)=>{
