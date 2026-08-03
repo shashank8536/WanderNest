@@ -2,14 +2,17 @@
   "name": "wandernest",
   "version": "1.0.0",
   "main": "app.js",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Shashank Shekhar",
   "license": "ISC",
-  "description": "",
+  "description": "A full-stack Airbnb-inspired accommodation booking platform with AI-powered travel planning, secure authentication, booking management, and email notifications.",
   "dependencies": {
     "@google/genai": "^2.13.0",
     "@mapbox/mapbox-sdk": "^0.16.2",
