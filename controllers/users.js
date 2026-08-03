@@ -10,21 +10,22 @@ module.exports.signup = async (req, res, next) => {
     try {
         let { username, email, password } = req.body;
         const otp = generateOTP();
-        const newUser = new User({ 
-            email, 
+        const newUser = new User({
+            email,
             username,
             isVerified: false,
             otp,
             otpExpiry: Date.now() + 10 * 60 * 1000 // 10 mins
         });
         const registeredUser = await User.register(newUser, password);
-        
+
         await sendOTPEmail(email, username, otp);
-        
+
         req.session.verificationEmail = email;
         req.flash("success", "Welcome to WanderNest! An OTP has been sent to your email. Please verify your account.");
         res.redirect("/verify-otp");
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
         res.redirect("/signup");
     }
@@ -51,14 +52,14 @@ module.exports.verifyOtp = async (req, res, next) => {
             req.flash("error", "User not found.");
             return res.redirect("/signup");
         }
-        
+
         if (user.otp === otp && user.otpExpiry > Date.now()) {
             user.isVerified = true;
             user.otp = undefined;
             user.otpExpiry = undefined;
             await user.save();
             delete req.session.verificationEmail;
-            
+
             req.login(user, (err) => {
                 if (err) {
                     return next(err);
@@ -71,8 +72,9 @@ module.exports.verifyOtp = async (req, res, next) => {
             res.redirect("/verify-otp");
         }
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
-        res.redirect("/verify-otp");
+        res.redirect("/signup");
     }
 };
 
@@ -92,13 +94,14 @@ module.exports.resendOtp = async (req, res) => {
         user.otp = otp;
         user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 mins
         await user.save();
-        
+
         await sendOTPEmail(email, user.username, otp);
         req.flash("success", "A new OTP has been sent to your email.");
         res.redirect("/verify-otp");
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
-        res.redirect("/verify-otp");
+        res.redirect("/signup");
     }
 };
 
@@ -114,10 +117,10 @@ module.exports.login = async (req, res, next) => {
         user.otp = otp;
         user.otpExpiry = Date.now() + 10 * 60 * 1000;
         await user.save();
-        
+
         await sendOTPEmail(email, user.username, otp);
         req.session.verificationEmail = email;
-        
+
         req.logout((err) => {
             if (err) {
                 return next(err);
@@ -127,7 +130,7 @@ module.exports.login = async (req, res, next) => {
         });
         return;
     }
-    
+
     req.flash("success", "Welcome back to WanderNest!");
     const redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);
@@ -152,7 +155,7 @@ module.exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
-        
+
         if (!user) {
             req.flash("error", "Email not registered.");
             return res.redirect("/forgot-password");
@@ -164,13 +167,14 @@ module.exports.forgotPassword = async (req, res) => {
         await user.save();
 
         await sendResetOTPEmail(email, user.username, otp);
-        
+
         req.session.resetEmail = email;
         req.flash("success", "OTP sent successfully.");
         res.redirect("/verify-reset-otp");
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
-        res.redirect("/forgot-password");
+        res.redirect("/signup");
     }
 };
 
@@ -186,7 +190,7 @@ module.exports.verifyResetOtp = async (req, res) => {
     try {
         const { otp } = req.body;
         const email = req.session.resetEmail;
-        
+
         if (!email) {
             req.flash("error", "Session expired. Please request a new OTP.");
             return res.redirect("/forgot-password");
@@ -207,8 +211,9 @@ module.exports.verifyResetOtp = async (req, res) => {
             res.redirect("/verify-reset-otp");
         }
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
-        res.redirect("/verify-reset-otp");
+        res.redirect("/signup");
     }
 };
 
@@ -252,7 +257,8 @@ module.exports.resetPassword = async (req, res) => {
         req.flash("success", "Password updated successfully. Please log in.");
         res.redirect("/login");
     } catch (e) {
+        console.error("Signup Error:", e);
         req.flash("error", e.message);
-        res.redirect("/reset-password");
+        res.redirect("/signup");
     }
 };
