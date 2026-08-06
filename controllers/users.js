@@ -7,6 +7,7 @@ module.exports.renderSignupForm = (req, res) => {
 }
 
 module.exports.signup = async (req, res, next) => {
+    let registeredUser;
     try {
         let { username, email, password } = req.body;
         const otp = generateOTP();
@@ -17,7 +18,7 @@ module.exports.signup = async (req, res, next) => {
             otp,
             otpExpiry: Date.now() + 10 * 60 * 1000 // 10 mins
         });
-        const registeredUser = await User.register(newUser, password);
+        registeredUser = await User.register(newUser, password);
 
         await sendOTPEmail(email, username, otp);
 
@@ -26,6 +27,13 @@ module.exports.signup = async (req, res, next) => {
         res.redirect("/verify-otp");
     } catch (e) {
         console.error("Signup Error:", e);
+        if (registeredUser) {
+            try {
+                await User.findByIdAndDelete(registeredUser._id);
+            } catch (err) {
+                console.error("Error deleting registered user after mail failure:", err);
+            }
+        }
         req.flash("error", e.message);
         res.redirect("/signup");
     }

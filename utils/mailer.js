@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
     tls: {
         rejectUnauthorized: false,
     },
+    family: 4 // Force IPv4 to prevent ENETUNREACH/timeout errors
 });
 
 // 1. Send OTP for Signup Verification
