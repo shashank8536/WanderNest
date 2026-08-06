@@ -1,11 +1,18 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    family: 4,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
 
 // 1. Send OTP for Signup Verification
 const sendOTPEmail = async (email, username, otp) => {
-    return resend.emails.send({
-        from: "WanderNest <onboarding@resend.dev>",
+    const mailOptions = {
+        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Verify your WanderNest Account",
         html: `
@@ -21,13 +28,14 @@ const sendOTPEmail = async (email, username, otp) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    });
+    };
+    return transporter.sendMail(mailOptions);
 };
 
 // 2. Send OTP for Password Reset
 const sendResetOTPEmail = async (email, username, otp) => {
-    return resend.emails.send({
-        from: "WanderNest <onboarding@resend.dev>",
+    const mailOptions = {
+        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Reset your WanderNest Password",
         html: `
@@ -43,13 +51,14 @@ const sendResetOTPEmail = async (email, username, otp) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    });
+    };
+    return transporter.sendMail(mailOptions);
 };
 
 // 3. Send Booking Confirmation
 const sendBookingConfirmationEmail = async (email, username, booking) => {
-    return resend.emails.send({
-        from: "WanderNest <onboarding@resend.dev>",
+    const mailOptions = {
+        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Booking Confirmed - WanderNest",
         html: `
@@ -72,13 +81,14 @@ const sendBookingConfirmationEmail = async (email, username, booking) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    });
+    };
+    return transporter.sendMail(mailOptions);
 };
 
 // 4. Send Booking Cancellation
 const sendBookingCancellationEmail = async (email, username, bookingId) => {
-    return resend.emails.send({
-        from: "WanderNest <onboarding@resend.dev>",
+    const mailOptions = {
+        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Booking Cancelled - WanderNest",
         html: `
@@ -96,10 +106,12 @@ const sendBookingCancellationEmail = async (email, username, bookingId) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    });
+    };
+    return transporter.sendMail(mailOptions);
 };
 
 module.exports = {
+    transporter,
     sendOTPEmail,
     sendResetOTPEmail,
     sendBookingConfirmationEmail,
