@@ -136,7 +136,32 @@ app.get("/", (req, res) => {
 //     res.send(registerUser);
 // })
 
+// Temporary routes for debugging DNS and SMTP connection issues
+app.get("/dns-test", (req, res) => {
+    dns.lookup("smtp.gmail.com", { all: true }, (err, addresses) => {
+        if (err) {
+            return res.json(err);
+        }
+        res.json(addresses);
+    });
+});
 
+const { transporter } = require("./utils/mailer");
+app.get("/smtp-test", async (req, res) => {
+    try {
+        await transporter.verify();
+        res.send("SMTP Connected");
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: err.message,
+            code: err.code,
+            errno: err.errno,
+            address: err.address,
+            port: err.port
+        });
+    }
+});
 
 
 // * means agar upar kisi incoming response se match ho ggya hoga to response chla gya hoga 
