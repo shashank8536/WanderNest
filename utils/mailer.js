@@ -1,24 +1,24 @@
-const nodemailer = require("nodemailer");
+const { BrevoClient } = require("@getbrevo/brevo");
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    family: 4,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
+const brevo = new BrevoClient({
+    apiKey: process.env.BREVO_API_KEY,
 });
 
 // 1. Send OTP for Signup Verification
 const sendOTPEmail = async (email, username, otp) => {
-    const mailOptions = {
-        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
-        to: email,
+    return brevo.transactionalEmails.sendTransacEmail({
+        sender: {
+            email: process.env.EMAIL_USER,
+            name: "WanderNest"
+        },
+        to: [
+            {
+                email: email,
+                name: username
+            }
+        ],
         subject: "Verify your WanderNest Account",
-        html: `
+        htmlContent: `
             <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #fe424d; text-align: center;">Welcome to WanderNest!</h2>
                 <p>Hello ${username},</p>
@@ -31,17 +31,24 @@ const sendOTPEmail = async (email, username, otp) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    };
-    return transporter.sendMail(mailOptions);
+    });
 };
 
 // 2. Send OTP for Password Reset
 const sendResetOTPEmail = async (email, username, otp) => {
-    const mailOptions = {
-        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
-        to: email,
+    return brevo.transactionalEmails.sendTransacEmail({
+        sender: {
+            email: process.env.EMAIL_USER,
+            name: "WanderNest"
+        },
+        to: [
+            {
+                email: email,
+                name: username
+            }
+        ],
         subject: "Reset your WanderNest Password",
-        html: `
+        htmlContent: `
             <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #fe424d; text-align: center;">Password Reset Request</h2>
                 <p>Hello ${username},</p>
@@ -54,17 +61,24 @@ const sendResetOTPEmail = async (email, username, otp) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    };
-    return transporter.sendMail(mailOptions);
+    });
 };
 
 // 3. Send Booking Confirmation
 const sendBookingConfirmationEmail = async (email, username, booking) => {
-    const mailOptions = {
-        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
-        to: email,
+    return brevo.transactionalEmails.sendTransacEmail({
+        sender: {
+            email: process.env.EMAIL_USER,
+            name: "WanderNest"
+        },
+        to: [
+            {
+                email: email,
+                name: username
+            }
+        ],
         subject: "Booking Confirmed - WanderNest",
-        html: `
+        htmlContent: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #fe424d; text-align: center;">Stay Confirmed! 🎉</h2>
                 <p>Hello ${username},</p>
@@ -84,17 +98,24 @@ const sendBookingConfirmationEmail = async (email, username, booking) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    };
-    return transporter.sendMail(mailOptions);
+    });
 };
 
 // 4. Send Booking Cancellation
 const sendBookingCancellationEmail = async (email, username, bookingId) => {
-    const mailOptions = {
-        from: `"WanderNest" <${process.env.EMAIL_USER}>`,
-        to: email,
+    return brevo.transactionalEmails.sendTransacEmail({
+        sender: {
+            email: process.env.EMAIL_USER,
+            name: "WanderNest"
+        },
+        to: [
+            {
+                email: email,
+                name: username
+            }
+        ],
         subject: "Booking Cancelled - WanderNest",
-        html: `
+        htmlContent: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #fe424d; text-align: center;">Booking Cancelled</h2>
                 <p>Hello ${username},</p>
@@ -109,12 +130,10 @@ const sendBookingCancellationEmail = async (email, username, bookingId) => {
                 <p style="text-align: center; color: #999; font-size: 0.8em;">© 2026 WanderNest. All rights reserved.</p>
             </div>
         `
-    };
-    return transporter.sendMail(mailOptions);
+    });
 };
 
 module.exports = {
-    transporter,
     sendOTPEmail,
     sendResetOTPEmail,
     sendBookingConfirmationEmail,

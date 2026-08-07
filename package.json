@@ -14,6 +14,7 @@
   "license": "ISC",
   "description": "A full-stack Airbnb-inspired accommodation booking platform with AI-powered travel planning, secure authentication, booking management, and email notifications.",
   "dependencies": {
+    "@getbrevo/brevo": "^6.0.2",
     "@google/genai": "^2.13.0",
     "@mapbox/mapbox-sdk": "^0.16.2",
     "axios": "^1.18.1",
