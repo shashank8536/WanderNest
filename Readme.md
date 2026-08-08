@@ -1,13 +1,13 @@
 # WanderNest
 
-WanderNest is a full-stack travel accommodation platform inspired by Airbnb. It enables users to discover stays, book accommodations, manage reservations, and receive AI-powered travel recommendations. The platform combines secure authentication, real-time booking validation, live weather insights, and personalized travel planning into a modern travel experience.
+WanderNest is a full-stack travel accommodation platform inspired by Airbnb. It enables users to discover stays, book accommodations, manage reservations, and receive AI-powered travel recommendations. The platform combines secure authentication, OTP-based email verification using the Brevo Transactional Email API, real-time booking validation, live weather insights, and personalized AI-powered travel planning into a modern travel experience.
 
 ## Features
 
 ### Authentication & Security
 
 - Secure authentication using Passport.js
-- Email verification with OTP via Nodemailer
+- OTP-based email verification using Brevo Transactional Email API
 - Forgot Password and Reset Password functionality
 - Session-based authentication
 - Ownership-based authorization
@@ -93,7 +93,7 @@ WanderNest is a full-stack travel accommodation platform inspired by Airbnb. It 
 - OpenWeather API
 - Mapbox API
 - Cloudinary
-- Nodemailer
+- Brevo Transactional Email API
 
 ---
 
@@ -172,8 +172,8 @@ CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_KEY=your_cloudinary_api_key
 CLOUDINARY_SECRET=your_cloudinary_api_secret
 
-EMAIL_USER=your_email_address
-EMAIL_PASS=your_email_app_password
+EMAIL_USER=your_verified_brevo_sender_email
+BREVO_API_KEY=your_brevo_api_key
 ```
 
 ---
